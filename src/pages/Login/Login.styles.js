@@ -13,18 +13,23 @@ const useStyles = createStyles((theme) => ({
     marginBottom: 32,
   },
 
-  email: {
+  formRow: {
+    position: 'relative',
     marginBottom: 32,
   },
 
-  password: {
-    marginBottom: 12,
+  errorInput: {
+    borderColor: theme.colors.red,
   },
 
   forgot: {
     display: 'block',
-    marginBottom: 32,
+    marginTop: 12,
     textAlign: 'right',
+  },
+
+  forgotLink: {
+    fontSize: 14,
   },
 
   button: { marginBottom: 32 },

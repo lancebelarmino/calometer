@@ -8,6 +8,7 @@ const componentStyles = {
     root: {
       color: theme.colors.gray[3],
       transition: theme.other.transitions.color,
+
       '&:hover': { color: theme.colors.green[1], textDecoration: 'none' },
     },
   }),
@@ -15,25 +16,45 @@ const componentStyles = {
   // Inputs
   TextInput: (theme) => ({
     defaultVariant: {
+      height: 40,
       border: `1px solid ${theme.colors.gray[1]}`,
       transition: theme.other.transitions.border,
+
       '&:focus': { borderColor: theme.colors.green[1] },
+    },
+    input: {
+      height: 40,
+      color: theme.colors.black,
+      fontSize: 14,
+      lineHeight: 1.2,
     },
     label: {
       marginBottom: 12,
       color: theme.colors.black,
       fontSize: theme.fontSizes.md,
     },
+    error: {
+      position: 'absolute',
+      bottom: -24,
+    },
   }),
 
   PasswordInput: (theme) => ({
     defaultVariant: {
+      height: '40px !important',
       border: `1px solid ${theme.colors.gray[1]}`,
       transition: theme.other.transitions.border,
+
       '&:focus-within': {
         outline: 'none',
         borderColor: theme.colors.green[1],
       },
+    },
+    innerInput: {
+      height: '100%',
+      color: theme.colors.black,
+      fontSize: 14,
+      lineHeight: 1.2,
     },
     label: {
       marginBottom: 12,

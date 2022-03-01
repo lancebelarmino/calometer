@@ -6,6 +6,7 @@ const theme = {
     lime: ['#FBFFE5', '#CEDA52'],
     yellow: ['#FFF7E1', '#F6ECC8', '#FFC700'],
     orange: ['#FFF8F1', '#FFF7E1', '#FF743C'],
+    // red: '#F94537',
   },
   fontFamily: 'Noto Sans, sans-serif',
   fontSizes: {
