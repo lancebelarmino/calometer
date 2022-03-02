@@ -3,27 +3,19 @@ import { createStyles } from '@mantine/core';
 const useStyles = createStyles((theme) => ({
   section: {
     display: 'grid',
+    position: 'relative',
     placeItems: 'center',
-    marginTop: 0,
-    height: '100vh',
+    height: 'calc(100vh - 72px)',
   },
 
   wrapper: {
     width: 440,
-    position: 'relative',
   },
 
   logo: {
-    position: 'absolute',
-    top: -120,
-
-    '@media (max-width: 1366px)': {
-      top: -80,
-    },
-  },
-
-  title: {
-    marginBottom: 40,
+    display: 'block',
+    padding: '40px 0 0 40px',
+    height: 32,
   },
 }));
 

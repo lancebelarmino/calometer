@@ -1,9 +1,10 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { Grid, Anchor, TextInput, PasswordInput, Button } from '@mantine/core';
+import { Grid, Anchor, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase-config';
-import FormSection from '../../components/Sections/FormSection';
+import FormSection from '../../components/Form/FormSection';
+import FormLink from '../../components/Form/FormLink';
 import useStyles from './Login.styles';
 
 export const Login = () => {
@@ -20,7 +21,7 @@ export const Login = () => {
     },
 
     errorMessages: {
-      email: 'Invalid email',
+      email: `Invalid email`,
     },
   });
   const { classes } = useStyles();
@@ -41,27 +42,22 @@ export const Login = () => {
     form.setFieldValue(e.target.id, e.target.value);
   };
 
-  const blurHandler = (e) => {
-    form.validateField(e.target.id);
-  };
-
   return (
     <Grid>
-      <Grid.Col span={6}>
+      <Grid.Col md={7} xl={6}>
         <FormSection title="Sign in your account">
+          <Title className={classes.title} order={4}>
+            Sign in your account
+          </Title>
+
           <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
             <div className={classes.formRow}>
-              <TextInput
-                id="email"
-                label="Email"
-                onChange={changeHandler}
-                onBlur={blurHandler}
-                {...form.getInputProps('email')}
-              />
+              <TextInput id="email" label="Email" onChange={changeHandler} {...form.getInputProps('email', 'error')} />
+              {/* {form.errors.email && <span className={classes.error}>Invalid email: {form.values.email}</span>} */}
             </div>
 
             <div className={classes.formRow}>
-              <PasswordInput id="password" className={classes.password} onChange={changeHandler} label="Password" />
+              <PasswordInput id="password" onChange={changeHandler} label="Password" />
               <div className={classes.forgot}>
                 <Anchor className={classes.forgotLink} component={Link} to="/reset">
                   Forgot Password?
@@ -74,15 +70,10 @@ export const Login = () => {
             </Button>
           </form>
 
-          <div className={classes.register}>
-            <Anchor component={Link} to="/register">
-              Don’t have an account?
-              <span className={classes.signup}> Sign up</span>
-            </Anchor>
-          </div>
+          <FormLink link="/register" message="Don’t have an account?" highlight="Sign up" />
         </FormSection>
       </Grid.Col>
-      <Grid.Col className={classes.background} span={6} />
+      <Grid.Col className={classes.background} md={5} xl={6} />
     </Grid>
   );
 };

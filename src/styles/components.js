@@ -22,24 +22,35 @@ const componentStyles = {
 
       '&:focus': { borderColor: theme.colors.green[1] },
     },
+
     input: {
       height: 40,
       color: theme.colors.black,
       fontSize: 14,
       lineHeight: 1.2,
     },
+
     label: {
       marginBottom: 12,
       color: theme.colors.black,
       fontSize: theme.fontSizes.md,
     },
+
     error: {
       position: 'absolute',
       bottom: -24,
     },
+
+    required: {
+      display: 'none',
+    },
   }),
 
   PasswordInput: (theme) => ({
+    root: {
+      position: 'relative',
+    },
+
     defaultVariant: {
       height: '40px !important',
       border: `1px solid ${theme.colors.gray[1]}`,
@@ -50,17 +61,28 @@ const componentStyles = {
         borderColor: theme.colors.green[1],
       },
     },
+
     innerInput: {
       height: '100%',
       color: theme.colors.black,
       fontSize: 14,
       lineHeight: 1.2,
     },
+
     label: {
       marginBottom: 12,
       color: theme.colors.black,
       fontSize: theme.fontSizes.md,
       lineHeight: 1.5,
+    },
+
+    error: {
+      position: 'absolute',
+      bottom: -24,
+    },
+
+    required: {
+      display: 'none',
     },
   }),
 

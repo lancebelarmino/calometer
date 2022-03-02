@@ -14,35 +14,17 @@ const useStyles = createStyles((theme) => ({
     marginBottom: 32,
   },
 
+  formRowPassword: {
+    marginBottom: 60,
+  },
+
   errorInput: {
     borderColor: theme.colors.red,
   },
 
-  forgot: {
-    display: 'block',
-    marginTop: 12,
-    textAlign: 'right',
-  },
+  labelPass: { marginBottom: 8 },
 
-  forgotLink: {
-    fontSize: 14,
-  },
-
-  register: {
-    display: 'block',
-    textAlign: 'center',
-  },
-
-  signup: {
-    color: theme.colors.green[1],
-  },
-
-  error: {
-    position: 'absolute',
-    bottom: -24,
-    fontSize: theme.fontSizes.sm,
-    color: theme.colors.red,
-  },
+  descPass: { marginBottom: 12, color: theme.colors.gray[3] },
 
   background: {
     background: 'left center / cover no-repeat url("https://f004.backblazeb2.com/file/calometer/signin-lg.svg")',

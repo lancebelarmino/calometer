@@ -6,13 +6,10 @@ const FormSection = ({ children, title }) => {
   const { classes } = useStyles();
 
   return (
-    <div className={classes.section}>
-      <div className={classes.wrapper}>
-        <Logo className={classes.logo} />
-        <Title className={classes.title} order={4}>
-          {title}
-        </Title>
-        {children}
+    <div>
+      <Logo className={classes.logo} />
+      <div className={classes.section}>
+        <div className={classes.wrapper}>{children}</div>
       </div>
     </div>
   );
