@@ -1,9 +1,10 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { MantineProvider, Global } from '@mantine/core';
+import { AnimatePresence } from 'framer-motion';
 import PublicWrapper from './components/Routes/PublicWrapper';
 import PrivateWrapper from './components/Routes/PrivateWrapper';
-import LoadingPage from './components/LoadingPage';
+import Spinner from './components/Spinner/Spinner';
 import theme from './styles/theme';
 import components from './styles/components';
 import global from './styles/global';
@@ -19,24 +20,28 @@ const App = () => {
   return (
     <MantineProvider theme={theme} styles={components} withNormalizeCSS>
       <Global styles={global} />
-      <Suspense fallback={<LoadingPage />}>
-        <Router>
-          <Routes>
-            <Route element={<PublicWrapper />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/reset" element={<Reset />} />
-            </Route>
+      <AnimatePresence exitBeforeEnter>
+        <Suspense key="spinner" fallback={<Spinner />}>
+          <Router>
+            <Routes>
+              <Route element={<PublicWrapper />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/reset" element={<Reset />} />
+              </Route>
 
-            <Route element={<PrivateWrapper />}>
-              <Route path="/" element={<Navigate to={'/dashboard'} />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/tracker" element={<Tracker />} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
-          </Routes>
-        </Router>
-      </Suspense>
+              <Route path="/spinner" element={<Spinner />} />
+
+              <Route element={<PrivateWrapper />}>
+                <Route path="/" element={<Navigate to={'/dashboard'} />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/tracker" element={<Tracker />} />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
+            </Routes>
+          </Router>
+        </Suspense>
+      </AnimatePresence>
     </MantineProvider>
   );
 };
