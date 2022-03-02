@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { MantineProvider, Global } from '@mantine/core';
+import PublicWrapper from './components/Routes/PublicWrapper';
 import PrivateWrapper from './components/Routes/PrivateWrapper';
 import LoadingPage from './components/LoadingPage';
 import theme from './styles/theme';
@@ -21,9 +22,11 @@ const App = () => {
       <Suspense fallback={<LoadingPage />}>
         <Router>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/reset" element={<Reset />} />
+            <Route element={<PublicWrapper />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/reset" element={<Reset />} />
+            </Route>
 
             <Route element={<PrivateWrapper />}>
               <Route path="/" element={<Navigate to={'/dashboard'} />} />
