@@ -1,10 +1,16 @@
+import { useNavigate } from 'react-router-dom';
 import { Grid, Title, TextInput, PasswordInput, Button, SimpleGrid } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { ref, set } from 'firebase/database';
+import { auth, db } from '../../firebase-config';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
 import useStyles from './Register.styles';
+import toCapitalize from '../../utils/toCapitalize';
 
 export const Register = () => {
+  const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       firstName: '',
@@ -26,15 +32,24 @@ export const Register = () => {
   const { classes } = useStyles();
 
   const submitHandler = async (value) => {
-    console.log(value);
+    const firstName = toCapitalize(value.firstName);
+    const lastName = toCapitalize(value.lastName);
+
     form.reset();
 
-    // try {
-    //   // const user = await signInWithEmailAndPassword(auth, value.email, value.password);
-    //   navigate('/login', { replace: true });
-    // } catch (error) {
-    //   console.log(error.code, error.message);
-    // }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
+      const user = userCredential.user;
+      const userSnapshot = await set(ref(db, 'users/' + user.uid), {
+        firstName,
+        lastName,
+        isNewUser: true,
+      });
+
+      navigate('/onboarding', { replace: true });
+    } catch (error) {
+      console.log(error.code, error.message);
+    }
   };
 
   const changeHandler = (e) => {

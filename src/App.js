@@ -12,6 +12,7 @@ import global from './styles/global';
 const Login = lazy(() => import('./routes/Login.js'));
 const Register = lazy(() => import('./routes/Register.js'));
 const Reset = lazy(() => import('./routes/Reset.js'));
+const Onboarding = lazy(() => import('./routes/Onboarding.js'));
 const Dashboard = lazy(() => import('./routes/Dashboard.js'));
 const Tracker = lazy(() => import('./routes/Tracker.js'));
 const Settings = lazy(() => import('./routes/Settings.js'));
@@ -34,6 +35,7 @@ const App = () => {
 
               <Route element={<PrivateWrapper />}>
                 <Route path="/" element={<Navigate to={'/dashboard'} />} />
+                <Route path="/onboarding" element={<Onboarding />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/tracker" element={<Tracker />} />
                 <Route path="/settings" element={<Settings />} />

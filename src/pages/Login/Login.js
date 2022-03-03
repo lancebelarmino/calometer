@@ -31,10 +31,11 @@ export const Login = () => {
   const submitHandler = async (value) => {
     try {
       const user = await signInWithEmailAndPassword(auth, value.email, value.password);
-      console.log(user);
       navigate(from, { replace: true });
     } catch (error) {
-      console.log(error.code, error.message);
+      if (error.code === 'auth/user-not-found') {
+        form.setFieldError('email', 'User not found');
+      }
     }
   };
 
@@ -53,7 +54,6 @@ export const Login = () => {
           <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
             <div className={classes.formRow}>
               <TextInput id="email" label="Email" onChange={changeHandler} {...form.getInputProps('email', 'error')} />
-              {/* {form.errors.email && <span className={classes.error}>Invalid email: {form.values.email}</span>} */}
             </div>
 
             <div className={classes.formRow}>
