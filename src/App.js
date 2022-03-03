@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { MantineProvider, Global } from '@mantine/core';
 import { AnimatePresence } from 'framer-motion';
 import PublicWrapper from './components/Routes/PublicWrapper';

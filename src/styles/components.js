@@ -99,6 +99,12 @@ const componentStyles = {
   }),
 
   // Layouts
+  Container: (theme) => ({
+    root: {
+      padding: 0,
+    },
+  }),
+
   Grid: (theme) => ({
     root: {
       margin: 0,
