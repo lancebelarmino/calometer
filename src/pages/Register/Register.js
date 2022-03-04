@@ -39,11 +39,11 @@ export const Register = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
       const user = userCredential.user;
 
-      // await set(ref(db, 'users/' + user.uid), {
-      //   firstName,
-      //   lastName,
-      //   isNewUser: true,
-      // });
+      await set(ref(db, 'users/' + user.uid), {
+        firstName,
+        lastName,
+        isOnboarded: false,
+      });
 
       navigate('/onboarding', { replace: true });
     } catch (error) {
