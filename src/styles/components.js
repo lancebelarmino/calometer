@@ -4,6 +4,10 @@ const componentStyles = {
     root: { color: theme.colors.black },
   }),
 
+  Text: (theme) => ({
+    root: { color: theme.colors.gray[3] },
+  }),
+
   Anchor: (theme) => ({
     root: {
       color: theme.colors.gray[3],

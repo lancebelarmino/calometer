@@ -6,7 +6,9 @@ const PrivateWrapper = () => {
   const location = useLocation();
   const currentUser = useAuth();
 
-  if (currentUser === undefined) return <Spinner />;
+  if (currentUser === undefined) {
+    return <Spinner />;
+  }
 
   return currentUser ? <Outlet /> : <Navigate to="/login" replace state={{ from: location }} />;
 };

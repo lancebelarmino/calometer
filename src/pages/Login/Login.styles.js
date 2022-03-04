@@ -14,10 +14,6 @@ const useStyles = createStyles((theme) => ({
     marginBottom: 32,
   },
 
-  errorInput: {
-    borderColor: theme.colors.red,
-  },
-
   forgot: {
     display: 'block',
     marginTop: 12,

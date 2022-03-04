@@ -26,12 +26,10 @@ const App = () => {
           <Router>
             <Routes>
               <Route element={<PublicWrapper />}>
-                <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/reset" element={<Reset />} />
               </Route>
-
-              <Route path="/spinner" element={<Spinner />} />
 
               <Route element={<PrivateWrapper />}>
                 <Route path="/" element={<Navigate to={'/dashboard'} />} />

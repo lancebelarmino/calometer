@@ -6,16 +6,19 @@ const theme = {
     lime: ['#FBFFE5', '#CEDA52'],
     yellow: ['#FFF7E1', '#F6ECC8', '#FFC700'],
     orange: ['#FFF8F1', '#FFF7E1', '#FF743C'],
-    // red: '#F94537',
   },
+
   fontFamily: 'Noto Sans, sans-serif',
+
   fontSizes: {
     xs: 12,
     sm: 14,
     md: 16,
     lg: 20,
   },
+
   lineHeight: 1.5,
+
   headings: {
     fontFamily: 'Noto Sans, sans-serif',
     fontWeight: 500,
@@ -28,6 +31,7 @@ const theme = {
       h6: { fontSize: 16, lineHeight: 1.5 },
     },
   },
+
   breakpoints: {
     xs: 500,
     sm: 768,
@@ -35,6 +39,7 @@ const theme = {
     lg: 1366,
     xl: 1720,
   },
+
   other: {
     transitions: {
       color: 'color 200ms ease',

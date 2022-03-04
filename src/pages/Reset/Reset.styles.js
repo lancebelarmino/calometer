@@ -1,8 +1,12 @@
 import { createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
-  title: {
+  header: {
     marginBottom: 40,
+  },
+
+  title: {
+    marginBottom: 12,
   },
 
   form: {
@@ -11,16 +15,34 @@ const useStyles = createStyles((theme) => ({
 
   formRow: {
     position: 'relative',
+    marginBottom: 40,
+  },
+
+  emailIcon: {
+    display: 'block',
+    width: '100%',
+    marginBottom: 40,
+  },
+
+  successBtn: {
     marginBottom: 32,
   },
 
-  formRowPassword: {
-    marginBottom: 60,
+  resendBtn: {
+    display: 'block',
+    width: '100%',
+    color: theme.colors.gray[3],
+    textAlign: 'center',
+    transition: theme.other.transitions.color,
+
+    '&:hover': {
+      color: theme.colors.green[1],
+    },
   },
 
-  labelPass: { marginBottom: 8 },
-
-  descPass: { marginBottom: 12, color: theme.colors.gray[3] },
+  highlight: {
+    color: theme.colors.green[1],
+  },
 
   background: {
     background: 'left center / cover no-repeat url("https://f004.backblazeb2.com/file/calometer/signin-lg.svg")',

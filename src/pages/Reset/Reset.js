@@ -1,3 +1,114 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Grid, Title, Text, TextInput, Button, UnstyledButton } from '@mantine/core';
+import { useForm } from '@mantine/hooks';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../firebase-config';
+import FormSection from '../../components/Form/FormSection';
+import FormLink from '../../components/Form/FormLink';
+import { ReactComponent as EmailSentIcon } from '../../assets/svg/email-sent.svg';
+import useStyles from './Reset.styles';
+
 export const Reset = () => {
-  return <div>Reset</div>;
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const navigate = useNavigate();
+  const form = useForm({
+    initialValues: {
+      email: '',
+    },
+
+    validationRules: {
+      email: (value) => /^\S+@\S+$/.test(value),
+    },
+
+    errorMessages: {
+      email: 'Invalid email',
+    },
+  });
+  const { classes } = useStyles();
+
+  const submitHandler = async (value) => {
+    try {
+      await sendPasswordResetEmail(auth, value.email);
+      setIsSubmitted(true);
+    } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        form.setFieldError('email', 'User not found');
+      }
+    }
+  };
+
+  const changeHandler = (e) => {
+    form.setFieldValue(e.target.id, e.target.value);
+  };
+
+  const resendHandler = (e) => {
+    setIsSubmitted(false);
+  };
+
+  const loginHandler = (e) => {
+    navigate('/login');
+  };
+
+  const formSection = (
+    <>
+      <div className={classes.header}>
+        <Title className={classes.title} order={4}>
+          Reset password
+        </Title>
+
+        <Text>Enter your registered email below and we'll send you a link to reset your password.</Text>
+      </div>
+
+      <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
+        <div className={classes.formRow}>
+          <TextInput
+            label="Email"
+            value={form.values.email}
+            onChange={changeHandler}
+            onBlur={() => form.validateField('email')}
+            required
+            {...form.getInputProps('email')}
+          />
+        </div>
+
+        <Button type="submit" fullWidth>
+          Send
+        </Button>
+      </form>
+
+      <FormLink link="/login" message="Remember your password?" highlight="Log in" />
+    </>
+  );
+
+  const successSection = (
+    <>
+      <div className={classes.header}>
+        <Title className={classes.title} order={4}>
+          Check your email
+        </Title>
+
+        <Text>Please check your inbox, we sent you a reset link.</Text>
+      </div>
+
+      <EmailSentIcon className={classes.emailIcon} />
+
+      <Button className={classes.successBtn} onClick={loginHandler} fullWidth>
+        Back to login
+      </Button>
+
+      <UnstyledButton className={classes.resendBtn} onClick={resendHandler}>
+        Didn't receive anything? <span className={classes.highlight}>Resend email</span>
+      </UnstyledButton>
+    </>
+  );
+
+  return (
+    <Grid>
+      <Grid.Col md={7} xl={6}>
+        <FormSection>{isSubmitted ? successSection : formSection}</FormSection>
+      </Grid.Col>
+      <Grid.Col className={classes.background} md={5} xl={6} />
+    </Grid>
+  );
 };

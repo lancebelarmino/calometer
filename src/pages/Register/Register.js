@@ -35,16 +35,15 @@ export const Register = () => {
     const firstName = toCapitalize(value.firstName);
     const lastName = toCapitalize(value.lastName);
 
-    form.reset();
-
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
       const user = userCredential.user;
-      const userSnapshot = await set(ref(db, 'users/' + user.uid), {
-        firstName,
-        lastName,
-        isNewUser: true,
-      });
+
+      // await set(ref(db, 'users/' + user.uid), {
+      //   firstName,
+      //   lastName,
+      //   isNewUser: true,
+      // });
 
       navigate('/onboarding', { replace: true });
     } catch (error) {
@@ -99,7 +98,7 @@ export const Register = () => {
             </div>
 
             <Button type="submit" fullWidth>
-              Sign In
+              Create Account
             </Button>
           </form>
 

@@ -9,9 +9,6 @@ const PublicWrapper = () => {
     return <Spinner />;
   }
 
-  // TODO: check if new user
-  // console.log(currentUser);
-
   return currentUser ? <Navigate to="/dashboard" /> : <Outlet />;
 };
 

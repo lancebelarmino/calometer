@@ -30,7 +30,7 @@ export const Login = () => {
 
   const submitHandler = async (value) => {
     try {
-      const user = await signInWithEmailAndPassword(auth, value.email, value.password);
+      await signInWithEmailAndPassword(auth, value.email, value.password);
       navigate(from, { replace: true });
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
