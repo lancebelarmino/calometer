@@ -139,7 +139,7 @@ const OnboardingThree = ({ setScreen, setData }) => {
           <motion.div className={classes.formRow} variants={contentVariant} custom={4}>
             <TextInput
               label="Height"
-              placeholder={heightUnit === 'm' ? 'E.g. 1.5' : `E.g. 5'11`}
+              placeholder={heightUnit === 'm' ? 'E.g. 1.5' : `E.g. 5'11"`}
               onChange={changeHandler}
               onBlur={() => form.validateField('height')}
               required

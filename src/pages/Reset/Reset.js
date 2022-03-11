@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Title, Text, TextInput, Button, UnstyledButton } from '@mantine/core';
+import { Title, Text, Image, TextInput, Button, UnstyledButton } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
@@ -71,7 +71,6 @@ export const Reset = () => {
           Send
         </Button>
       </form>
-
       <FormLink link="/login" message="Remember your password?" highlight="Log in" />
     </>
   );
@@ -98,12 +97,5 @@ export const Reset = () => {
     </>
   );
 
-  return (
-    <Grid>
-      <Grid.Col md={7} xl={6}>
-        <FormSection>{isSubmitted ? successSection : formSection}</FormSection>
-      </Grid.Col>
-      <Grid.Col className={classes.background} md={5} xl={6} />
-    </Grid>
-  );
+  return <FormSection>{isSubmitted ? successSection : formSection}</FormSection>;
 };

@@ -38,36 +38,30 @@ export const Login = () => {
   };
 
   return (
-    <Grid>
-      <Grid.Col md={7} xl={6}>
-        <FormSection title="Sign in your account">
-          <Title className={classes.title} order={4}>
-            Sign in your account
-          </Title>
+    <FormSection title="Sign in your account">
+      <Title className={classes.title} order={4}>
+        Sign in your account
+      </Title>
 
-          <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
-            <div className={classes.formRow}>
-              <TextInput id="email" label="Email" onChange={changeHandler} {...form.getInputProps('email', 'error')} />
-            </div>
+      <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
+        <div className={classes.formRow}>
+          <TextInput id="email" label="Email" onChange={changeHandler} {...form.getInputProps('email', 'error')} />
+        </div>
 
-            <div className={classes.formRow}>
-              <PasswordInput id="password" onChange={changeHandler} label="Password" />
-              <div className={classes.forgot}>
-                <Anchor className={classes.forgotLink} component={Link} to="/reset">
-                  Forgot Password?
-                </Anchor>
-              </div>
-            </div>
+        <div className={classes.formRow}>
+          <PasswordInput id="password" onChange={changeHandler} label="Password" />
+          <div className={classes.forgot}>
+            <Anchor className={classes.forgotLink} component={Link} to="/reset">
+              Forgot Password?
+            </Anchor>
+          </div>
+        </div>
 
-            <Button type="submit" fullWidth>
-              Sign In
-            </Button>
-          </form>
-
-          <FormLink link="/register" message="Don’t have an account?" highlight="Sign up" />
-        </FormSection>
-      </Grid.Col>
-      <Grid.Col className={classes.background} md={5} xl={6} />
-    </Grid>
+        <Button type="submit" fullWidth>
+          Sign In
+        </Button>
+      </form>
+      <FormLink link="/register" message="Don’t have an account?" highlight="Sign up" />
+    </FormSection>
   );
 };

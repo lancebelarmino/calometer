@@ -32,6 +32,10 @@ const useStyles = createStyles((theme) => ({
   formRow: {
     position: 'relative',
     marginBottom: 32,
+
+    '&:last-of-type': {
+      marginBottom: 40,
+    },
   },
 }));
 

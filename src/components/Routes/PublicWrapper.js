@@ -10,10 +10,6 @@ const PublicWrapper = () => {
     return <Spinner />;
   }
 
-  /**
-   * If currentUser && !isOnboarded || isOnboarded === null return Spinner or Navigate to onboard
-   */
-
   return currentUser ? <Navigate to="/dashboard" /> : <Outlet state={{ from: location }} />;
 };
 

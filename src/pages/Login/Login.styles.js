@@ -39,14 +39,6 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.sm,
     color: theme.colors.red,
   },
-
-  background: {
-    background: 'left center / cover no-repeat url("https://f004.backblazeb2.com/file/calometer/signin-lg.svg")',
-
-    '@media (max-width: 1366px)': {
-      background: 'center right / contain no-repeat url("https://f004.backblazeb2.com/file/calometer/signin-md.svg")',
-    },
-  },
 }));
 
 export default useStyles;
