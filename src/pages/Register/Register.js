@@ -1,16 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 import { Grid, Title, TextInput, PasswordInput, Button, SimpleGrid } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { ref, set } from 'firebase/database';
-import { auth, db } from '../../firebase-config';
+import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
 import useStyles from './Register.styles';
 import toCapitalize from '../../utils/toCapitalize';
 
 export const Register = () => {
-  const navigate = useNavigate();
+  const { onRegister, errors } = useContext(AuthContext);
   const form = useForm({
     initialValues: {
       firstName: '',
@@ -34,26 +32,22 @@ export const Register = () => {
   const submitHandler = async (value) => {
     const firstName = toCapitalize(value.firstName);
     const lastName = toCapitalize(value.lastName);
+    const defaultData = {
+      firstName: firstName,
+      lastName: lastName,
+      isOnboarded: false,
+    };
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
-      const user = userCredential.user;
-
-      await set(ref(db, 'users/' + user.uid), {
-        firstName,
-        lastName,
-        isOnboarded: false,
-      });
-
-      navigate('/onboarding', { replace: true });
-    } catch (error) {
-      console.log(error.code, error.message);
-    }
+    onRegister(value.email, value.password, defaultData);
   };
 
   const changeHandler = (e) => {
     form.setFieldValue(e.target.id, e.target.value);
   };
+
+  if (errors.register) {
+    console.log(errors.register);
+  }
 
   return (
     <Grid>

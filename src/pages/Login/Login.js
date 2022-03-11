@@ -1,15 +1,15 @@
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Grid, Anchor, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase-config';
+import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
 import useStyles from './Login.styles';
 
 export const Login = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const { onLogin } = useContext(AuthContext);
   const form = useForm({
     initialValues: {
       email: '',
@@ -24,19 +24,13 @@ export const Login = () => {
       email: `Invalid email`,
     },
   });
+  const from = location.state?.from?.pathname || '/dashboard';
   const { classes } = useStyles();
 
-  const from = location.state?.from?.pathname || '/dashboard';
+  // console.log(location, from);
 
   const submitHandler = async (value) => {
-    try {
-      await signInWithEmailAndPassword(auth, value.email, value.password);
-      navigate(from, { replace: true });
-    } catch (error) {
-      if (error.code === 'auth/user-not-found') {
-        form.setFieldError('email', 'User not found');
-      }
-    }
+    onLogin(value.email, value.password, from);
   };
 
   const changeHandler = (e) => {

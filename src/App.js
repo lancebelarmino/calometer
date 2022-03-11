@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { MantineProvider, Global } from '@mantine/core';
+import { AuthContextProvider } from './context/AuthContext';
 import { AnimatePresence } from 'framer-motion';
 import PublicWrapper from './components/Routes/PublicWrapper';
 import PrivateWrapper from './components/Routes/PrivateWrapper';
@@ -18,13 +19,17 @@ const Tracker = lazy(() => import('./routes/Tracker.js'));
 const Settings = lazy(() => import('./routes/Settings.js'));
 
 const App = () => {
+  const location = useLocation();
+
   return (
     <MantineProvider theme={theme} styles={components} withNormalizeCSS>
-      <Global styles={global} />
-      <AnimatePresence exitBeforeEnter>
+      <AuthContextProvider>
+        <Global styles={global} />
         <Suspense key="spinner" fallback={<Spinner />}>
-          <Router>
-            <Routes>
+          <AnimatePresence exitBeforeEnter>
+            <Routes key={location.pathname} location={location}>
+              <Route path="/" element={<Navigate to={'/dashboard'} />} />
+
               <Route element={<PublicWrapper />}>
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
@@ -32,16 +37,15 @@ const App = () => {
               </Route>
 
               <Route element={<PrivateWrapper />}>
-                <Route path="/" element={<Navigate to={'/dashboard'} />} />
                 <Route path="/onboarding" element={<Onboarding />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/tracker" element={<Tracker />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
             </Routes>
-          </Router>
+          </AnimatePresence>
         </Suspense>
-      </AnimatePresence>
+      </AuthContextProvider>
     </MantineProvider>
   );
 };

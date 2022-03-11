@@ -42,9 +42,11 @@ const theme = {
 
   other: {
     transitions: {
+      all: 'all 200ms ease',
       color: 'color 200ms ease',
       border: 'border 200ms ease',
       background: 'background 200ms ease',
+      stroke: 'stroke 200ms ease',
     },
   },
 };

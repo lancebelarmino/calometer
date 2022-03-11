@@ -1,7 +1,7 @@
 const componentStyles = {
   // Typography
   Title: (theme) => ({
-    root: { color: theme.colors.black },
+    root: { color: theme.colors.black, transition: theme.other.transitions.color },
   }),
 
   Text: (theme) => ({
@@ -50,6 +50,24 @@ const componentStyles = {
     },
   }),
 
+  NumberInput: (theme) => ({
+    input: {
+      border: `1px solid ${theme.colors.gray[1]}`,
+
+      '&:focus': { borderColor: theme.colors.green[1] },
+    },
+
+    label: {
+      marginBottom: 12,
+      color: theme.colors.black,
+      fontSize: theme.fontSizes.md,
+    },
+
+    required: {
+      display: 'none',
+    },
+  }),
+
   PasswordInput: (theme) => ({
     root: {
       position: 'relative',
@@ -90,6 +108,34 @@ const componentStyles = {
     },
   }),
 
+  DatePicker: (theme) => ({
+    dropdown: {
+      border: `1px solid ${theme.colors.gray[1]}`,
+    },
+
+    arrow: { borderColor: theme.colors.gray[1] },
+
+    label: {
+      marginBottom: 12,
+      color: theme.colors.black,
+      fontSize: theme.fontSizes.md,
+      lineHeight: 1.5,
+    },
+
+    input: {
+      border: `1px solid ${theme.colors.gray[1]}`,
+
+      '&:focus-within': {
+        outline: 'none',
+        borderColor: theme.colors.green[1],
+      },
+    },
+
+    required: {
+      display: 'none',
+    },
+  }),
+
   // Buttons
   Button: (theme) => ({
     root: {
@@ -99,6 +145,12 @@ const componentStyles = {
       '&:hover': {
         backgroundColor: theme.colors.green[2],
       },
+    },
+  }),
+
+  UnstyledButton: (theme) => ({
+    root: {
+      color: theme.colors.black,
     },
   }),
 

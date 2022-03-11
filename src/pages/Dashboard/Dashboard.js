@@ -1,13 +1,11 @@
-import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase-config';
+import { useContext } from 'react';
+import AuthContext from '../../context/AuthContext';
 
 export const Dashboard = () => {
-  const navigate = useNavigate();
+  const { onLogout } = useContext(AuthContext);
 
-  const handler = async () => {
-    await signOut(auth);
-    navigate('/login');
+  const handler = () => {
+    onLogout();
   };
 
   return (

@@ -5,15 +5,14 @@ import useAuth from '../../hooks/useAuth';
 const PublicWrapper = () => {
   const location = useLocation();
   const currentUser = useAuth();
-  const from = location.state?.from?.pathname || '/dashboard';
 
   if (currentUser === undefined) {
     return <Spinner />;
   }
 
-  if (from === '/register') {
-    return <Navigate to="/onboarding" />;
-  }
+  /**
+   * If currentUser && !isOnboarded || isOnboarded === null return Spinner or Navigate to onboard
+   */
 
   return currentUser ? <Navigate to="/dashboard" /> : <Outlet state={{ from: location }} />;
 };

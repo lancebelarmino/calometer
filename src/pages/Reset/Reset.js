@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Title, Text, TextInput, Button, UnstyledButton } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../../firebase-config';
+import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
 import { ReactComponent as EmailSentIcon } from '../../assets/svg/email-sent.svg';
@@ -12,6 +11,7 @@ import useStyles from './Reset.styles';
 export const Reset = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+  const { onReset } = useContext(AuthContext);
   const form = useForm({
     initialValues: {
       email: '',
@@ -28,14 +28,9 @@ export const Reset = () => {
   const { classes } = useStyles();
 
   const submitHandler = async (value) => {
-    try {
-      await sendPasswordResetEmail(auth, value.email);
+    onReset(value.email, () => {
       setIsSubmitted(true);
-    } catch (error) {
-      if (error.code === 'auth/user-not-found') {
-        form.setFieldError('email', 'User not found');
-      }
-    }
+    });
   };
 
   const changeHandler = (e) => {
