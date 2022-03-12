@@ -41,6 +41,7 @@ export const removeLocalItem = (key) => {
 
 export const AuthContextProvider = (props) => {
   const [errors, setErrors] = useState(defaultError);
+  const [from, setFrom] = useState(null);
   const currentUser = useAuth();
   const dbRef = ref(db);
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ export const AuthContextProvider = (props) => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       const snapshot = await get(child(dbRef, `users/${user.uid}`));
+      const path = from || 'dashboard';
 
       if (snapshot.exists()) {
         const isOnboarded = snapshot.val().isOnboarded;
@@ -59,7 +61,7 @@ export const AuthContextProvider = (props) => {
       }
 
       setErrors(defaultError);
-      navigate(from, { replace: true });
+      navigate(path, { replace: true });
     } catch (error) {
       console.log(error);
       setErrors((prevData) => {
@@ -124,6 +126,8 @@ export const AuthContextProvider = (props) => {
         onReset: resetHandler,
         onOnboarded: onboardedHandler,
         errors,
+        from,
+        setFrom,
       }}>
       {props.children}
     </AuthContext.Provider>

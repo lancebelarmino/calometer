@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Grid, Anchor, Title, TextInput, PasswordInput, Button } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { Anchor, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
@@ -8,8 +8,7 @@ import FormLink from '../../components/Form/FormLink';
 import useStyles from './Login.styles';
 
 export const Login = () => {
-  const location = useLocation();
-  const { onLogin } = useContext(AuthContext);
+  const { onLogin, from } = useContext(AuthContext);
   const form = useForm({
     initialValues: {
       email: '',
@@ -24,10 +23,7 @@ export const Login = () => {
       email: `Invalid email`,
     },
   });
-  const from = location.state?.from?.pathname || '/dashboard';
   const { classes } = useStyles();
-
-  // console.log(location, from);
 
   const submitHandler = async (value) => {
     onLogin(value.email, value.password, from);

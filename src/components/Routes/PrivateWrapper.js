@@ -1,14 +1,18 @@
+import { useEffect, useContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import useAuth from '../../hooks/useAuth';
-import { getLocalItem } from '../../context/AuthContext';
+import AuthContext, { getLocalItem } from '../../context/AuthContext';
 
 const PrivateWrapper = () => {
   const location = useLocation();
   const currentUser = useAuth();
   const isOnboarded = getLocalItem('isOnboarded');
+  const { setFrom } = useContext(AuthContext);
 
-  console.log(location);
+  useEffect(() => {
+    setFrom(location.state?.from?.pathname);
+  }, [location.state, setFrom]);
 
   if (currentUser === undefined) {
     return <Spinner />;
