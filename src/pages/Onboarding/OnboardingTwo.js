@@ -50,7 +50,7 @@ const OnboardingTwo = ({ setScreen, setData }) => {
 
   const lightClickHandler = () => {
     setData((prevData) => {
-      return { lifeStyle: 'Lightly Active', ...prevData };
+      return { ...prevData, lifestyle: 'Lightly Active' };
     });
 
     setScreen(3);
@@ -58,7 +58,7 @@ const OnboardingTwo = ({ setScreen, setData }) => {
 
   const moderateClickHandler = () => {
     setData((prevData) => {
-      return { lifeStyle: 'Moderately Active', ...prevData };
+      return { ...prevData, lifestyle: 'Moderately Active' };
     });
 
     setScreen(3);
@@ -66,7 +66,7 @@ const OnboardingTwo = ({ setScreen, setData }) => {
 
   const veryClickHandler = () => {
     setData((prevData) => {
-      return { lifeStyle: 'Moderately Active', ...prevData };
+      return { ...prevData, lifestyle: 'Very Active' };
     });
 
     setScreen(3);

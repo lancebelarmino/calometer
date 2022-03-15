@@ -8,7 +8,7 @@ import useStyles from './Register.styles';
 import toCapitalize from '../../utils/toCapitalize';
 
 export const Register = () => {
-  const { onRegister, errors } = useContext(AuthContext);
+  const { onRegister } = useContext(AuthContext);
   const form = useForm({
     initialValues: {
       firstName: '',
@@ -38,16 +38,12 @@ export const Register = () => {
       isOnboarded: false,
     };
 
-    onRegister(value.email, value.password, defaultData);
+    onRegister(value.email, value.password, defaultData, form.setFieldError);
   };
 
   const changeHandler = (e) => {
     form.setFieldValue(e.target.id, e.target.value);
   };
-
-  if (errors.register) {
-    console.log(errors.register);
-  }
 
   return (
     <FormSection>

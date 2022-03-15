@@ -18,12 +18,11 @@ const AuthContext = React.createContext({
   onOnboarded: (email, cb) => {},
 });
 
-const defaultError = {
-  login: false,
-  logout: false,
-  register: false,
-  reset: false,
-  onboarding: false,
+const getError = (error) => {
+  const unformattedError = error.split('/').pop();
+  const formattedError = unformattedError.replace(/-/g, ' ');
+
+  return formattedError;
 };
 
 export const setLocalItem = (key, value) => {
@@ -40,13 +39,12 @@ export const removeLocalItem = (key) => {
 };
 
 export const AuthContextProvider = (props) => {
-  const [errors, setErrors] = useState(defaultError);
   const [from, setFrom] = useState(null);
   const currentUser = useAuth();
   const dbRef = ref(db);
   const navigate = useNavigate();
 
-  const loginHandler = async (email, password, from) => {
+  const loginHandler = async (email, password, from, errorCallback) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -56,26 +54,33 @@ export const AuthContextProvider = (props) => {
       if (snapshot.exists()) {
         const isOnboarded = snapshot.val().isOnboarded;
         setLocalItem('isOnboarded', isOnboarded);
-      } else {
-        console.log('No data available');
       }
 
-      setErrors(defaultError);
       navigate(path, { replace: true });
     } catch (error) {
-      console.log(error);
-      setErrors((prevData) => {
-        return { register: error, ...prevData };
-      });
+      const errorMessage = getError(error.code);
+
+      if (errorMessage.includes('user')) {
+        errorCallback('email', errorMessage);
+      }
+
+      if (errorMessage.includes('password')) {
+        errorCallback('password', errorMessage);
+      }
     }
   };
 
   const logoutHandler = async () => {
-    await signOut(auth);
-    navigate('/login', { replace: true });
+    try {
+      await signOut(auth);
+      navigate('/login', { replace: true });
+    } catch (error) {
+      const errorMessage = getError(error.code);
+      console.log(errorMessage);
+    }
   };
 
-  const registerHandler = async (email, password, defaultData) => {
+  const registerHandler = async (email, password, defaultData, errorCallback) => {
     try {
       removeLocalItem('isOnboarded');
       setLocalItem('isOnboarded', false);
@@ -84,36 +89,31 @@ export const AuthContextProvider = (props) => {
       const user = userCredential.user;
 
       await set(ref(db, 'users/' + user.uid), defaultData);
-      setErrors(defaultError);
       navigate('/onboarding', { replace: true });
     } catch (error) {
-      console.log(error);
-      setErrors((prevData) => {
-        return { register: error, ...prevData };
-      });
+      const errorMessage = getError(error.code);
+      errorCallback('email', errorMessage);
     }
   };
 
-  const resetHandler = async (email, cb) => {
+  const resetHandler = async (email, successCallback, errorCallback) => {
     try {
       await sendPasswordResetEmail(auth, email);
-      cb();
+      successCallback();
     } catch (error) {
-      console.log(error);
-      setErrors((prevData) => {
-        return { register: error, ...prevData };
-      });
+      const errorMessage = getError(error.code);
+      errorCallback('email', errorMessage);
     }
   };
 
-  const onboardedHandler = async (data, cb) => {
+  const onboardedHandler = async (data, successCallback) => {
     try {
       await set(ref(db, 'users/' + currentUser.uid + '/profile'), data);
       await update(ref(db, 'users/' + currentUser.uid), { isOnboarded: true });
-      cb();
+      successCallback();
     } catch (error) {
-      console.log(error);
-      console.log(error.code, error.message);
+      const errorMessage = getError(error.code);
+      console.log(errorMessage);
     }
   };
 
@@ -125,7 +125,6 @@ export const AuthContextProvider = (props) => {
         onRegister: registerHandler,
         onReset: resetHandler,
         onOnboarded: onboardedHandler,
-        errors,
         from,
         setFrom,
       }}>

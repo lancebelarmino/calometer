@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Anchor, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
@@ -20,13 +20,15 @@ export const Login = () => {
     },
 
     errorMessages: {
-      email: `Invalid email`,
+      email: 'Invalid email',
+      password: 'Invalid password',
+      form: 'Form error',
     },
   });
   const { classes } = useStyles();
 
   const submitHandler = async (value) => {
-    onLogin(value.email, value.password, from);
+    onLogin(value.email, value.password, from, form.setFieldError);
   };
 
   const changeHandler = (e) => {
@@ -45,7 +47,13 @@ export const Login = () => {
         </div>
 
         <div className={classes.formRow}>
-          <PasswordInput id="password" onChange={changeHandler} label="Password" />
+          <PasswordInput
+            id="password"
+            onChange={changeHandler}
+            label="Password"
+            {...form.getInputProps('password', 'error')}
+          />
+
           <div className={classes.forgot}>
             <Anchor className={classes.forgotLink} component={Link} to="/reset">
               Forgot Password?

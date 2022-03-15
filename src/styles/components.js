@@ -43,6 +43,10 @@ const componentStyles = {
     error: {
       position: 'absolute',
       bottom: -24,
+
+      '&:first-letter': {
+        textTransform: 'capitalize',
+      },
     },
 
     required: {
@@ -101,6 +105,10 @@ const componentStyles = {
     error: {
       position: 'absolute',
       bottom: -24,
+
+      '&:first-letter': {
+        textTransform: 'capitalize',
+      },
     },
 
     required: {

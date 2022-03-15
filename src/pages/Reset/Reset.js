@@ -28,9 +28,13 @@ export const Reset = () => {
   const { classes } = useStyles();
 
   const submitHandler = async (value) => {
-    onReset(value.email, () => {
-      setIsSubmitted(true);
-    });
+    onReset(
+      value.email,
+      () => {
+        setIsSubmitted(true);
+      },
+      form.setFieldError
+    );
   };
 
   const changeHandler = (e) => {
