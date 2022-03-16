@@ -139,6 +139,11 @@ const componentStyles = {
       },
     },
 
+    error: {
+      position: 'absolute',
+      bottom: -24,
+    },
+
     required: {
       display: 'none',
     },

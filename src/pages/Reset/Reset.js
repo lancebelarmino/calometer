@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Title, Text, Image, TextInput, Button, UnstyledButton } from '@mantine/core';
-import { useForm } from '@mantine/hooks';
+import { Title, Text, TextInput, Button, UnstyledButton } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
@@ -17,12 +17,8 @@ export const Reset = () => {
       email: '',
     },
 
-    validationRules: {
-      email: (value) => /^\S+@\S+$/.test(value),
-    },
-
-    errorMessages: {
-      email: 'Invalid email',
+    validate: {
+      email: (value) => (value === '' ? null : /^\S+@\S+$/.test(value) ? null : 'Invalid email'),
     },
   });
   const { classes } = useStyles();

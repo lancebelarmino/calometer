@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Title, TextInput, PasswordInput, Button, SimpleGrid } from '@mantine/core';
-import { useForm } from '@mantine/hooks';
+import { useForm } from '@mantine/form';
 import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
@@ -17,19 +17,19 @@ export const Register = () => {
       password: '',
     },
 
-    validationRules: {
-      email: (value) => /^\S+@\S+$/.test(value),
-      password: (value) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value),
-    },
-
-    errorMessages: {
-      email: 'Invalid email',
-      password: 'Password is not strong enough',
+    validate: {
+      email: (value) => (value === '' ? null : /^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      password: (value) =>
+        value === ''
+          ? null
+          : /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value)
+          ? null
+          : 'Password is not strong enough',
     },
   });
   const { classes } = useStyles();
 
-  const submitHandler = async (value) => {
+  const submitHandler = (value) => {
     const firstName = toCapitalize(value.firstName);
     const lastName = toCapitalize(value.lastName);
     const defaultData = {

@@ -1,7 +1,7 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Anchor, Title, TextInput, PasswordInput, Button } from '@mantine/core';
-import { useForm } from '@mantine/hooks';
+import { useForm } from '@mantine/form';
 import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
@@ -15,19 +15,13 @@ export const Login = () => {
       password: '',
     },
 
-    validationRules: {
-      email: (value) => /^\S+@\S+$/.test(value),
-    },
-
-    errorMessages: {
-      email: 'Invalid email',
-      password: 'Invalid password',
-      form: 'Form error',
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
     },
   });
   const { classes } = useStyles();
 
-  const submitHandler = async (value) => {
+  const submitHandler = (value) => {
     onLogin(value.email, value.password, from, form.setFieldError);
   };
 
@@ -43,16 +37,11 @@ export const Login = () => {
 
       <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
         <div className={classes.formRow}>
-          <TextInput id="email" label="Email" onChange={changeHandler} {...form.getInputProps('email', 'error')} />
+          <TextInput id="email" label="Email" onChange={changeHandler} {...form.getInputProps('email')} />
         </div>
 
         <div className={classes.formRow}>
-          <PasswordInput
-            id="password"
-            onChange={changeHandler}
-            label="Password"
-            {...form.getInputProps('password', 'error')}
-          />
+          <PasswordInput id="password" onChange={changeHandler} label="Password" {...form.getInputProps('password')} />
 
           <div className={classes.forgot}>
             <Anchor className={classes.forgotLink} component={Link} to="/reset">

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Title, Text, TextInput, Button } from '@mantine/core';
-import { useForm } from '@mantine/hooks';
+import { useForm } from '@mantine/form';
 import { DatePicker } from '@mantine/dates';
 import { motion } from 'framer-motion';
 import SegmentedControl from '../../components/Input/SegmentedControl';
@@ -55,17 +55,20 @@ const OnboardingThree = ({ setScreen, setData }) => {
       height: '',
     },
 
-    validationRules: {
-      weight: (value) => /^[0-9]*(\.[0-9]{0,2})?$/.test(value),
+    // 'Invalid height'
+    validate: {
+      birthday: (value) => (value === '' ? 'Cannot be blank' : null),
+      weight: (value) => (/^[0-9]*(\.[0-9]{0,2})?$/.test(value) ? null : 'Invalid weight'),
       height: (value) =>
-        heightUnit === 'm'
+        value === ''
+          ? null
+          : heightUnit === 'm'
           ? /^[0-9]*(\.[0-9]{0,2})?$/.test(value)
-          : /^[3-7]'(?:\s*(?:1[01]|[0-9])(''|"))?$/.test(value),
-    },
-
-    errorMessages: {
-      weight: 'Invalid weight',
-      height: 'Invalid height',
+            ? null
+            : `Invalid height, E.g. 1.5`
+          : /^[3-7]'(?:\s*(?:1[01]|[0-9])(''|"))?$/.test(value)
+          ? null
+          : `Invalid height, E.g. 5'11"`,
     },
   });
 
@@ -110,7 +113,15 @@ const OnboardingThree = ({ setScreen, setData }) => {
 
         <motion.form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
           <motion.div className={classes.formRow} variants={contentVariant} custom={2}>
-            <DatePicker id="birthday" placeholder="Pick date" label="Birthday" onChange={dateChangeHandler} required />
+            <DatePicker
+              id="birthday"
+              placeholder="Pick date"
+              label="Birthday"
+              clearable={false}
+              onChange={dateChangeHandler}
+              required
+              {...form.getInputProps('birthday')}
+            />
           </motion.div>
 
           <motion.div className={classes.formRow} variants={contentVariant} custom={3}>
