@@ -1,12 +1,10 @@
 const global = (theme) => ({
-  body: {
-    fontFamily: theme.fontFamily,
+  '*, *::before, *::after': {
+    boxSizing: 'border-box',
   },
 
-  input: {
-    '&:autofill': {
-      color: 'red !important',
-    },
+  body: {
+    fontFamily: theme.fontFamily,
   },
 });
 

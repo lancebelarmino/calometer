@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { MantineProvider, Global } from '@mantine/core';
 import { AuthContextProvider } from './context/AuthContext';
 import { AnimatePresence } from 'framer-motion';
+import NavbarSection from './components/Navbar/NavbarSection';
 import PublicWrapper from './components/Routes/PublicWrapper';
 import PrivateWrapper from './components/Routes/PrivateWrapper';
 import Spinner from './components/Spinner/Spinner';
@@ -23,27 +24,30 @@ const App = () => {
 
   return (
     <MantineProvider theme={theme} styles={components} withNormalizeCSS>
+      <Global styles={global} />
       <AuthContextProvider>
-        <Global styles={global} />
         <Suspense key="spinner" fallback={<Spinner />}>
-          <AnimatePresence exitBeforeEnter>
-            <Routes key={location.pathname} location={location}>
-              <Route path="/" element={<Navigate to={'/dashboard'} />} />
+          <NavbarSection>
+            <AnimatePresence exitBeforeEnter>
+              <Routes key={location.pathname} location={location}>
+                <Route path="/" element={<Navigate to={'/dashboard'} />} />
 
-              <Route element={<PublicWrapper />}>
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/reset" element={<Reset />} />
-              </Route>
+                <Route element={<PublicWrapper />}>
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/reset" element={<Reset />} />
+                </Route>
 
-              <Route element={<PrivateWrapper />}>
-                <Route path="/onboarding" element={<Onboarding />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/tracker" element={<Tracker />} />
                 <Route path="/settings" element={<Settings />} />
-              </Route>
-            </Routes>
-          </AnimatePresence>
+
+                <Route element={<PrivateWrapper />}>
+                  <Route path="/onboarding" element={<Onboarding />} />
+                </Route>
+              </Routes>
+            </AnimatePresence>
+          </NavbarSection>
         </Suspense>
       </AuthContextProvider>
     </MantineProvider>

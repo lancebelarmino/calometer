@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Title, Text, TextInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { DatePicker } from '@mantine/dates';
@@ -55,7 +55,6 @@ const OnboardingThree = ({ setScreen, setData }) => {
       height: '',
     },
 
-    // 'Invalid height'
     validate: {
       birthday: (value) => (value === '' ? 'Cannot be blank' : null),
       weight: (value) => (/^[0-9]*(\.[0-9]{0,2})?$/.test(value) ? null : 'Invalid weight'),

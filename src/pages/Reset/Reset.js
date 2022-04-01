@@ -23,7 +23,7 @@ export const Reset = () => {
   });
   const { classes } = useStyles();
 
-  const submitHandler = async (value) => {
+  const submitHandler = (value) => {
     onReset(
       value.email,
       () => {
