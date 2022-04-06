@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Navbar as Nav, Group, Anchor, Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { motion, AnimatePresence } from 'framer-motion';
+import AuthContext from '../../context/AuthContext';
 import { ReactComponent as Logo } from '../../assets/svg/logo-sm.svg';
 import { ReactComponent as Dashboard } from '../../assets/svg/navbar-dashboard.svg';
 import { ReactComponent as Tracker } from '../../assets/svg/navbar-tracker.svg';
@@ -79,6 +80,7 @@ const mobileLinkVariant = {
 
 const Navbar = () => {
   const location = useLocation();
+  const { onLogout } = useContext(AuthContext);
   const { classes, cx } = useStyles();
   const [active, setActive] = useState();
   const [opened, setOpened] = useState(false);
@@ -87,10 +89,6 @@ const Navbar = () => {
 
   const path = location.pathname.split('/').pop();
   const currentPage = toCapitalize(path);
-
-  useEffect(() => {
-    setActive(currentPage);
-  }, [currentPage]);
 
   const desktopLinks = desktopMenu.map((item) => (
     <Anchor
@@ -126,6 +124,10 @@ const Navbar = () => {
       <span key={item.label}>{item.label}</span>
     </Anchor>
   ));
+
+  useEffect(() => {
+    setActive(currentPage);
+  }, [currentPage]);
 
   return (
     <AnimatePresence exitBeforeEnter>
@@ -174,7 +176,7 @@ const Navbar = () => {
           </Nav.Section>
 
           <Nav.Section className={classes.footer}>
-            <Anchor className={classes.link}>
+            <Anchor className={classes.link} onClick={onLogout}>
               <Logout className={classes.linkIcon} />
               <AnimatePresence exitBeforeEnter>
                 {desktopOpened && (

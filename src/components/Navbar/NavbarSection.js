@@ -1,12 +1,17 @@
+import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import useStyles from './NavbarSection.styles';
 
 const NavbarSection = ({ children }) => {
-  const { classes } = useStyles();
+  const location = useLocation();
+  const { classes, cx } = useStyles();
+
+  const validPaths = ['/dashboard', '/tracker', '/quotes', '/settings'];
+  const isValidPath = validPaths.includes(location.pathname);
 
   return (
-    <div className={classes.section}>
-      <Navbar />
+    <div className={cx({ [classes.section]: isValidPath })}>
+      {isValidPath && <Navbar />}
       {children}
     </div>
   );

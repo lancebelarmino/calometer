@@ -49,7 +49,7 @@ export const Onboarding = () => {
   }
 
   return (
-    <motion.div variants={sectionVariant} initial="hidden" animate="visible" exit="exit">
+    <motion.div className={classes.onboarding} variants={sectionVariant} initial="hidden" animate="visible" exit="exit">
       <AnimatePresence exitBeforeEnter>
         {screen === 1 && <OnboardingOne key="screen1" setScreen={setScreen} setData={setData} />}
         {screen === 2 && <OnboardingTwo key="screen2" setScreen={setScreen} setData={setData} />}

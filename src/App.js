@@ -38,12 +38,11 @@ const App = () => {
                   <Route path="/reset" element={<Reset />} />
                 </Route>
 
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/tracker" element={<Tracker />} />
-                <Route path="/settings" element={<Settings />} />
-
                 <Route element={<PrivateWrapper />}>
                   <Route path="/onboarding" element={<Onboarding />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/tracker" element={<Tracker />} />
+                  <Route path="/settings" element={<Settings />} />
                 </Route>
               </Routes>
             </AnimatePresence>

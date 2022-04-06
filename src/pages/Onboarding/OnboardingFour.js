@@ -1,8 +1,8 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Title } from '@mantine/core';
 import { GooSpinner } from 'react-spinners-kit';
-import AuthContext, { setLocalItem } from '../../context/AuthContext';
+import { setLocalItem } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
 import OnboardingSection from '../../components/Onboarding/OnboardingSection';
 import useStyles from './OnboardingFour.styles';
@@ -39,7 +39,6 @@ const contentVariant = {
 };
 
 const OnboardingFour = ({ setScreen, isSubmitted }) => {
-  const { setIsOnboarded } = useContext(AuthContext);
   const navigate = useNavigate();
   const { classes } = useStyles();
 
@@ -50,9 +49,11 @@ const OnboardingFour = ({ setScreen, isSubmitted }) => {
         setLocalItem('isOnboarded', true);
         navigate('/dashboard', { replace: true });
       }, 1500);
-      return () => clearTimeout(screenTimer);
+      return () => {
+        clearTimeout(screenTimer);
+      };
     }
-  }, [isSubmitted, navigate, setScreen, setIsOnboarded]);
+  }, [isSubmitted, navigate, setScreen]);
 
   return (
     <OnboardingSection size={'100%'} motionKey="screen1">
