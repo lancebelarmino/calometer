@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import { ScrollArea } from '@mantine/core';
 import Navbar from './Navbar';
 import useStyles from './NavbarSection.styles';
 
@@ -11,8 +12,10 @@ const NavbarSection = ({ children }) => {
 
   return (
     <div className={cx({ [classes.section]: isValidPath })}>
-      {isValidPath && <Navbar />}
-      {children}
+      <div className={classes.nav}>{isValidPath && <Navbar />}</div>
+      <ScrollArea className={classes.content} type="auto">
+        <div>{children}</div>
+      </ScrollArea>
     </div>
   );
 };

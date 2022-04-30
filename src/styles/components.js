@@ -152,12 +152,18 @@ const componentStyles = {
   // Buttons
   Button: (theme) => ({
     root: {
+      height: 40,
       backgroundColor: theme.colors.green[1],
       transition: theme.other.transitions.background,
 
       '&:hover': {
         backgroundColor: theme.colors.green[2],
       },
+    },
+
+    label: {
+      fontSize: theme.fontSizes.sm,
+      fontWeight: 500,
     },
   }),
 

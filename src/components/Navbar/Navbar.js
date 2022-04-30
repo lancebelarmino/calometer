@@ -86,6 +86,7 @@ const Navbar = () => {
   const [opened, setOpened] = useState(false);
   const [desktopOpened, setDesktopOpened] = useState(false);
   const isTablet = useMediaQuery('(max-width: 1024px)');
+  const isSmallScreen = useMediaQuery('(max-height: 620px)');
 
   const path = location.pathname.split('/').pop();
   const currentPage = toCapitalize(path);
@@ -131,7 +132,7 @@ const Navbar = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      {isTablet ? (
+      {isTablet || isSmallScreen ? (
         <Nav className={cx(classes.mobileNav, { [classes.mobileNavOpened]: opened })}>
           <Nav.Section className={classes.mobileHeader}>
             <Logo className={classes.logo} />

@@ -5,6 +5,7 @@ const global = (theme) => ({
 
   body: {
     fontFamily: theme.fontFamily,
+    overflow: 'hidden',
   },
 });
 

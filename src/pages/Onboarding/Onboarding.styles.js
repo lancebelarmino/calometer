@@ -5,7 +5,6 @@ import mobileBackground from '../../assets/svg/onboarding-sm.svg';
 
 const useStyles = createStyles((theme) => ({
   onboarding: {
-    overflowX: 'hidden',
     position: 'absolute',
     width: '100%',
     height: '100vh',

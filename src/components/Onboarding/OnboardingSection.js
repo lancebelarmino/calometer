@@ -2,7 +2,7 @@ import { Container } from '@mantine/core';
 import { motion } from 'framer-motion';
 import useStyles from './OnboardingSection.styles';
 
-const OnboardingSection = ({ children, size, motionKey }) => {
+const OnboardingSection = ({ children, size }) => {
   const { classes } = useStyles();
 
   return (

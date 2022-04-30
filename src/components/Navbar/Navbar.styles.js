@@ -23,10 +23,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
     },
 
     mobileNav: {
-      height: 97.19,
-      maxHeight: 97.19,
+      height: 88,
+      maxHeight: 88,
       minHeight: '0 !important',
-      padding: '1.5rem 0 2.5rem 0',
+      padding: '1.5rem 0 1.5rem 0',
       border: '1.6px solid transparent',
       transition: 'height 800ms ease, max-height 800ms ease',
       background: theme.colors.white,
@@ -38,16 +38,15 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
       [`& .${header}`]: {
         flex: 'none',
-        width: 30,
         height: 28,
       },
 
       [`& .${logo}`]: {
-        display: 'none',
+        opacity: 0,
       },
 
       [`& .${desktopBurger}`]: {
-        right: 0,
+        right: -12,
         transition: 'right 500ms ease',
       },
 
@@ -79,6 +78,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
       display: 'flex',
       justifyContent: 'space-between',
 
+      '@media (max-height: 620px)': {
+        padding: '0 2.5rem',
+      },
+
       [theme.fn.smallerThan('md')]: {
         padding: '0 2.5rem',
       },
@@ -90,6 +93,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
     logo: {
       ref: logo,
+      transition: 'opacity 500ms ease',
     },
 
     desktopBurger: {
@@ -172,11 +176,8 @@ const useStyles = createStyles((theme, _params, getRef) => {
       display: 'flex',
       flexDirection: 'column',
       width: '100%',
+      padding: '2.5rem 2.5rem 0 2.5rem',
       background: theme.colors.white,
-
-      [theme.fn.smallerThan('md')]: {
-        padding: '2.5rem 2.5rem 0 2.5rem',
-      },
 
       [theme.fn.smallerThan('sm')]: {
         padding: '2.5rem 1.5rem 0 1.5rem',
