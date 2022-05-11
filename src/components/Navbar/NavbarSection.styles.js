@@ -16,6 +16,10 @@ const useStyles = createStyles((theme) => ({
   content: {
     height: '100vh',
     flexGrow: 1,
+
+    [theme.fn.smallerThan('md')]: {
+      height: 'calc(100vh - 88px)',
+    },
   },
 }));
 

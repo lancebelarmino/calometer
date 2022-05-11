@@ -1,7 +1,7 @@
 import { createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
-  chart: {
+  section: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -13,6 +13,11 @@ const useStyles = createStyles((theme) => ({
 
   title: {
     marginBottom: 4,
+  },
+
+  chart: {
+    width: 140,
+    maxHeight: 80,
   },
 }));
 

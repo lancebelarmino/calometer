@@ -12,7 +12,7 @@ const NavbarSection = ({ children }) => {
 
   return (
     <div className={cx({ [classes.section]: isValidPath })}>
-      <div className={classes.nav}>{isValidPath && <Navbar />}</div>
+      <div>{isValidPath && <Navbar />}</div>
       <ScrollArea className={classes.content} type="auto">
         <div>{children}</div>
       </ScrollArea>

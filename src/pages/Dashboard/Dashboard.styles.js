@@ -6,7 +6,6 @@ const useStyles = createStyles((theme) => ({
 
     '@media (max-height: 620px)': {
       flexDirection: 'column',
-      background: 'red',
     },
 
     [theme.fn.smallerThan('md')]: {
@@ -15,21 +14,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   dashboardColLeft: {
-    minWidth: 960,
-    width: '100%',
     flexGrow: 1,
-
-    '@media (max-height: 620px)': {
-      minWidth: 'unset',
-      width: '100%',
-      marginBottom: 20,
-    },
-
-    [theme.fn.smallerThan('md')]: {
-      minWidth: 'unset',
-      width: '100%',
-      marginBottom: 20,
-    },
   },
 
   header: {
@@ -47,22 +32,35 @@ const useStyles = createStyles((theme) => ({
 
   stats: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
+    gridTemplateColumns: '1fr auto',
     gridTemplateRows: 'repeat(2, 1fr)',
     gap: 40,
     marginBottom: 80,
 
     [theme.fn.smallerThan('sm')]: {
+      alignContent: 'center',
       gridTemplateColumns: 'repeat(1, 1fr)',
-      gridTemplateRows: 'repeat(3, 1fr)',
+      gridTemplateRows: 'repeat(3, auto)',
     },
   },
 
-  statsItem1: {
+  statsBar: {
     gridRow: '1/3',
 
     [theme.fn.smallerThan('sm')]: {
       gridRow: '1/1',
+    },
+  },
+
+  statsLine: {
+    width: 360,
+
+    [theme.fn.smallerThan('sm')]: {
+      width: '100%',
+    },
+
+    [theme.fn.largerThan('xl')]: {
+      width: 420,
     },
   },
 
@@ -125,15 +123,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   dashboardColRight: {
-    minWidth: 380,
+    width: 380,
 
     '@media (max-height: 620px)': {
-      minWidth: 'unset',
       width: '100%',
     },
 
     [theme.fn.smallerThan('md')]: {
-      minWidth: 'unset',
       width: '100%',
     },
   },
@@ -166,8 +162,8 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  profileAge: {
-    marginBottom: 4,
+  profileLabel: {
+    marginBottom: 12,
   },
 
   profileIcon: {
@@ -175,7 +171,19 @@ const useStyles = createStyles((theme) => ({
     placeItems: 'center',
     height: 40,
     width: 40,
+    borderRadius: 4,
+  },
+
+  profileLime: {
     background: theme.colors.lime[0],
+  },
+
+  profileOrange: {
+    background: theme.colors.orange[0],
+  },
+
+  profileYellow: {
+    background: theme.colors.yellow[0],
   },
 
   quoteHeader: {
@@ -216,6 +224,10 @@ const useStyles = createStyles((theme) => ({
 
   quoteContent: {
     marginBottom: 8,
+  },
+
+  formRow: {
+    position: 'relative',
   },
 }));
 

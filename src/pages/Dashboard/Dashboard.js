@@ -1,5 +1,7 @@
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Text, Title, Button, Image, Group, UnstyledButton } from '@mantine/core';
+import dayjs from 'dayjs';
 import Section from '../../components/Pages/Section';
 import Card from '../../components/Pages/Card';
 import BarChart from '../../components/Chart/BarChart';
@@ -11,29 +13,52 @@ import { ReactComponent as Height } from '../../assets/svg/dashboard-height.svg'
 import { ReactComponent as Weight } from '../../assets/svg/dashboard-weight.svg';
 import { ReactComponent as Shuffle } from '../../assets/svg/dashboard-shuffle.svg';
 import useStyles from './Dashboard.styles';
+import getCalories from '../../utils/getCalories';
 
 const dummy_data = {
   weeklyReport: [560, 980, 700, 1600, 1100, 1450],
   aveCalories: [560, 980, 700, 1600, 1100, 1450],
-  totalCalories: 2500,
+  totalCalories: [560, 980, 700, 1600],
   recentlyAdded: [
     { food: 'Banana Cake', amount: '3 slices', calories: '500', time: 'Dinner' },
     { food: 'Apple Cake', amount: '2 slices', calories: '400', time: 'Lunch' },
     { food: 'Mango Cake', amount: '1 slices', calories: '300', time: 'Breakfast' },
   ],
-  profile: [
-    { label: 'Age', value: 21, icon: Age },
-    { label: 'Height', value: `7'11`, icon: Height },
-    { label: 'Weight', value: '64', icon: Weight },
-  ],
+  profile: {
+    birthday: '1999-05-14',
+    weight: `200`,
+    weightUnit: 'lbs',
+    height: `7'11"`,
+    heightUnit: 'ft',
+  },
   quotes: [
     { author: 'April RaQuel', quote: 'A lighter diet, frequent exercise and adequate sleep/rest.' },
     { author: 'April RaQuel', quote: 'A lighter diet, frequent exercise and adequate sleep/rest.' },
   ],
 };
 
+const getRandomNum = (arr) => {
+  let numArr = [];
+
+  for (let i = 0; i < 2; i++) {
+    const num = Math.floor(Math.random() * arr.length);
+    numArr.push(num);
+  }
+
+  return numArr;
+};
+
 export const Dashboard = () => {
-  const { classes } = useStyles();
+  const [quotesData, setQuotesData] = useState([]);
+  const [quotes, setQuotes] = useState([]);
+  const { classes, cx } = useStyles();
+
+  const currentDate = dayjs().format('DD/MM/YYYY');
+
+  const randomQuoteHandler = useCallback(() => {
+    const index = getRandomNum(quotesData);
+    setQuotes([quotesData[index[0]], quotesData[index[1]]]);
+  }, [quotesData]);
 
   const mealsData = dummy_data.recentlyAdded.map((data) => (
     <tr key={data.food}>
@@ -46,30 +71,25 @@ export const Dashboard = () => {
     </tr>
   ));
 
-  const profileData = dummy_data.profile.map((data) => (
-    <Card key={data.label} className={classes.profileCard}>
-      <Group position="apart">
-        <div>
-          <Text className={classes.profileAge}>{data.label}</Text>
-          <Title order={5}>
-            {data.value} {data.label === 'Height' ? 'ft' : data.label === 'Weight' ? 'lbs' : 'yrs'}
-          </Title>
-        </div>
-        <div className={classes.profileIcon}>
-          <data.icon />
-        </div>
-      </Group>
-    </Card>
-  ));
-
-  const quoteData = dummy_data.quotes.map((data, index) => (
+  const quoteData = quotes.map((data, index) => (
     <div key={index} className={classes.quoteItem}>
       <Title className={classes.quoteContent} order={6}>
-        {data.quote}
+        {data.text}
       </Title>
-      <Text size="sm">- {data.author}</Text>
+      <Text size="sm">- {data.author ? data.author : 'Anonymous'}</Text>
     </div>
   ));
+
+  useEffect(() => {
+    (async function getQuotes() {
+      const response = await fetch('https://type.fit/api/quotes');
+      const data = await response.json();
+      const index = getRandomNum(data);
+
+      setQuotesData(data);
+      setQuotes([data[index[0]], data[index[1]]]);
+    })();
+  }, []);
 
   return (
     <div className={classes.dashboard}>
@@ -88,16 +108,30 @@ export const Dashboard = () => {
         </div>
 
         <div className={classes.stats}>
-          <Card className={classes.statsItem1}>
+          <Card className={classes.statsBar}>
             <BarChart data="Content Here" title="Weekly Report" />
           </Card>
 
-          <Card className={classes.statsItem2}>
-            <LineChart data="1200 cal" title="Average Calories" subtitle="Per Day" />
+          <Card className={classes.statsLine}>
+            <LineChart
+              data={dummy_data.aveCalories}
+              title="Average Calories"
+              subtitle="Per Day"
+              callback={getCalories.average}
+              borderColor="#FF743C"
+              backgroundColor={['rgba(255, 116, 60, 0.6)', 'rgba(255, 116, 60, 0.01)']}
+            />
           </Card>
 
-          <Card className={classes.statsItem3}>
-            <LineChart data="2,500 cal" title="Total Calories" subtitle="Today" />
+          <Card className={classes.statsLine}>
+            <LineChart
+              data={dummy_data.totalCalories}
+              title="Total Calories"
+              subtitle="Today"
+              callback={getCalories.total}
+              borderColor="#D5E155"
+              backgroundColor={['rgba(213, 225, 85, 0.6)', 'rgba(213, 225, 85, 0.01)']}
+            />
           </Card>
         </div>
 
@@ -123,7 +157,7 @@ export const Dashboard = () => {
 
       <Section className={classes.dashboardColRight}>
         <div className={classes.profileEdit}>
-          <UnstyledButton>
+          <UnstyledButton component={Link} to="/settings">
             <Edit className={classes.icon} />
           </UnstyledButton>
         </div>
@@ -139,17 +173,57 @@ export const Dashboard = () => {
           <Title order={4}>John Doe</Title>
         </div>
 
-        <div className={classes.profileDetails}>{profileData}</div>
+        <div className={classes.profileDetails}>
+          <Card className={classes.profileCard}>
+            <Group position="apart">
+              <div>
+                <Text className={classes.profileLabel}>Age</Text>
+                <Title order={5}>{dayjs(currentDate).diff(dummy_data.profile.birthday, 'year')} yrs</Title>
+              </div>
+              <div className={cx(classes.profileIcon, classes.profileLime)}>
+                <Age />
+              </div>
+            </Group>
+          </Card>
+
+          <Card className={classes.profileCard}>
+            <Group position="apart">
+              <div>
+                <Text className={classes.profileLabel}>Height</Text>
+                <Title order={5}>
+                  {dummy_data.profile.height} {dummy_data.profile.heightUnit}
+                </Title>
+              </div>
+              <div className={cx(classes.profileIcon, classes.profileOrange)}>
+                <Height />
+              </div>
+            </Group>
+          </Card>
+
+          <Card className={classes.profileCard}>
+            <Group position="apart">
+              <div>
+                <Text className={classes.profileLabel}>Weight</Text>
+                <Title order={5}>
+                  {dummy_data.profile.weight} {dummy_data.profile.weightUnit}
+                </Title>
+              </div>
+              <div className={cx(classes.profileIcon, classes.profileYellow)}>
+                <Weight />
+              </div>
+            </Group>
+          </Card>
+        </div>
 
         <div>
           <Group className={classes.quoteHeader} position="apart">
             <Title order={5}>Quotes</Title>
-            <UnstyledButton>
+            <UnstyledButton onClick={randomQuoteHandler}>
               <Shuffle className={classes.icon} />
             </UnstyledButton>
           </Group>
 
-          <div>{quoteData}</div>
+          <div>{quotes && quoteData}</div>
         </div>
       </Section>
     </div>

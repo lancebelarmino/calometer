@@ -2,14 +2,10 @@ import { useRef, useEffect, useState } from 'react';
 import { Box } from '@mantine/core';
 import useStyles from './SegmentedControl.styles';
 
-const SegmentedControl = ({ data, sx, onClick }) => {
+const SegmentedControl = ({ data, sx, onClick, defaultPosition }) => {
   const refs = useRef([]);
   const [width, setWidth] = useState(null);
-  const [activePosition, setActivePosition] = useState({
-    left: -1,
-    translateX: 0,
-    borderRadius: '4px 0 0 4px',
-  });
+  const [activePosition, setActivePosition] = useState({ left: -1, translateX: 0, borderRadius: '4px 0 0 4px' });
   const [activeBtn, setActiveBtn] = useState('left');
   const { classes } = useStyles();
 
@@ -22,6 +18,16 @@ const SegmentedControl = ({ data, sx, onClick }) => {
       setWidth(largestWidth);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (defaultPosition === 'right') {
+      setActivePosition({ left: 0, translateX: width + 24, borderRadius: '0 4px 4px 0' });
+      setActiveBtn('right');
+    } else {
+      setActivePosition({ left: -1, translateX: 0, borderRadius: '4px 0 0 4px' });
+      setActiveBtn('left');
+    }
+  }, [defaultPosition, width]);
 
   const rowSx = () => ({
     zIndex: 999,

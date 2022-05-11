@@ -3,6 +3,7 @@ import { Title, Text, TextInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { DatePicker } from '@mantine/dates';
 import { motion } from 'framer-motion';
+import dayjs from 'dayjs';
 import SegmentedControl from '../../components/Input/SegmentedControl';
 import OnboardingSection from '../../components/Onboarding/OnboardingSection';
 import useStyles from './OnboardingThree.styles';
@@ -38,13 +39,6 @@ const contentVariant = {
   },
 };
 
-const getFormattedDate = (date) => {
-  const offset = date.getTimezoneOffset();
-  const offsetDate = new Date(date.getTime() - offset * 60 * 1000);
-
-  return offsetDate.toISOString().split('T')[0];
-};
-
 const OnboardingThree = ({ setScreen, setData }) => {
   const [weightUnit, setWeightUnit] = useState('lbs');
   const [heightUnit, setHeightUnit] = useState('m');
@@ -74,8 +68,7 @@ const OnboardingThree = ({ setScreen, setData }) => {
   const { classes } = useStyles();
 
   const dateChangeHandler = (date) => {
-    const birthday = getFormattedDate(date);
-    form.setFieldValue('birthday', birthday);
+    form.setFieldValue('birthday', date);
   };
 
   const changeHandler = (e) => {
@@ -86,7 +79,7 @@ const OnboardingThree = ({ setScreen, setData }) => {
     setData((prevData) => {
       return {
         ...prevData,
-        birthday: value.birthday,
+        birthday: dayjs(value.birthday).format('YYYY-MM-DD'),
         weight: value.weight,
         weightUnit: weightUnit,
         height: value.height,
