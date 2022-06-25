@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Group, Title, Button, UnstyledButton, ScrollArea, Menu } from '@mantine/core';
 import { motion, AnimatePresence, LayoutGroup, useAnimation } from 'framer-motion';
 import { BoardContextProvider } from '../../context/BoardContext';
 import { v4 as uuid4 } from 'uuid';
 import dayjs from 'dayjs';
 import useBoard from '../../hooks/useBoard';
+import getCalories from '../../utils/getCalories';
+import debounce from '../../utils/debounce';
 import Section from '../../components/Pages/Section';
 import Card from '../../components/Pages/Card';
 import LineChart from '../../components/Chart/LineChart';
@@ -13,7 +15,6 @@ import { ReactComponent as Statistics } from '../../assets/svg/tracker-statistic
 import { ReactComponent as Sort } from '../../assets/svg/tracker-sort.svg';
 import { ReactComponent as New } from '../../assets/svg/tracker-new.svg';
 import useStyles from './Tracker.styles';
-import getCalories from '../../utils/getCalories';
 
 const dropdownMenu = ['time', 'recent', 'highest', 'lowest'];
 
@@ -98,6 +99,28 @@ export const Tracker = () => {
     });
   };
 
+  const scrollToRight = (type, position) => {
+    if (type === 'promise') {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          scrollRef.current.scrollTo({ left: scrollRef.current.scrollWidth });
+          resolve();
+        }, 500);
+      });
+    } else if (type === 'onload') {
+      setTimeout(
+        () => scrollRef.current.scrollTo({ left: position ?? scrollRef.current.scrollWidth, behavior: 'smooth' }),
+        200
+      );
+    }
+  };
+
+  const scrollPositionChangeHandler = (position) => {
+    localStorage.setItem('board_scroll_position', JSON.stringify({ x: position.x }));
+  };
+
+  const debouncedScrollPositionChangeHandler = useMemo(() => debounce(scrollPositionChangeHandler, 200), []);
+
   const boardsList = boardsData?.map((item, index) => (
     <BoardContextProvider
       key={index}
@@ -123,19 +146,6 @@ export const Tracker = () => {
     </Menu.Item>
   ));
 
-  const scrollToRight = (type) => {
-    if (type === 'promise') {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          scrollRef.current.scrollTo({ left: scrollRef.current.scrollWidth });
-          resolve();
-        }, 500);
-      });
-    }
-
-    setTimeout(() => scrollRef.current.scrollTo({ left: scrollRef.current.scrollWidth, behavior: 'smooth' }), 200);
-  };
-
   useEffect(() => {
     if (scrollRef.current !== undefined) {
       if (scrollRef.current.children[3]) {
@@ -146,7 +156,14 @@ export const Tracker = () => {
 
   useEffect(() => {
     if (isFirstLoad && boardsData !== null) {
-      scrollToRight();
+      const position = JSON.parse(localStorage.getItem('board_scroll_position'));
+
+      if (position) {
+        scrollToRight('onload', position.x);
+      } else {
+        scrollToRight();
+      }
+
       setIsFirstLoad(false);
     }
   }, [isFirstLoad, boardsData]);
@@ -247,6 +264,7 @@ export const Tracker = () => {
               className={classes.boardArea}
               type="auto"
               offsetScrollbars
+              onScrollPositionChange={debouncedScrollPositionChangeHandler}
               component={motion.div}
               initial={false}
               layout>
