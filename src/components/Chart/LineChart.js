@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Text, Title } from '@mantine/core';
-import { Chart as ChartJS, PointElement, LineElement } from 'chart.js';
+import { Chart as ChartJS, PointElement, LineElement, registerables } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Filler } from 'chart.js';
 import useStyles from './LineChart.styles';
 import getCalories from '../../utils/getCalories';
 
-ChartJS.register(PointElement, LineElement, Filler);
+ChartJS.register(PointElement, LineElement, Filler, ...registerables);
 
 export const options = {
   responsive: true,
@@ -53,7 +53,7 @@ const createGradient = (canvas, color = defaultGradient) => {
 };
 
 const LineChart = ({ data, title, subtitle, callback, borderColor = '#6ED47C', backgroundColor }) => {
-  const [value, setValue] = useState({ calories: 0, arr: [0, 0, 0, 0, 0] });
+  const [value, setValue] = useState({ calories: 0, arr: [0, 0, 0, 0, 0, 0, 0] });
   const [chartData, setChartData] = useState({ datasets: [] });
   const canvasRef = useRef(null);
   const { classes } = useStyles();
@@ -70,7 +70,7 @@ const LineChart = ({ data, title, subtitle, callback, borderColor = '#6ED47C', b
 
     if (canvas) {
       setChartData({
-        labels: ['May 1', 'May 2', 'May 3', 'May 4', 'May 5'],
+        labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
         datasets: [
           {
             fill: true,

@@ -47,6 +47,7 @@ const theme = {
       border: 'border 200ms ease',
       background: 'background 200ms ease',
       stroke: 'stroke 200ms ease',
+      fill: 'fill 200ms ease',
     },
   },
 };

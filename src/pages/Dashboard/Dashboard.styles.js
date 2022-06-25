@@ -192,11 +192,16 @@ const useStyles = createStyles((theme) => ({
 
   icon: {
     '& > circle, & > path': {
-      transition: theme.other.transitions.stroke,
+      transition: theme.other.transitions.all,
+    },
+
+    '&:hover svg': {
+      background: 'red',
     },
 
     '&:hover > circle': {
       stroke: theme.colors.green[1],
+      fill: 'rgba(110, 212, 124, 0.08)',
     },
 
     '&:hover > path': {

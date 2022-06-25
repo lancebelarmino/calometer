@@ -74,7 +74,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
     mobileHeader: {
       position: 'relative',
-      zIndex: 999,
+      zIndex: 199,
       display: 'flex',
       justifyContent: 'space-between',
 
@@ -172,7 +172,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
     mobileMenu: {
       position: 'relative',
-      zIndex: 9999,
+      zIndex: 199,
       display: 'flex',
       flexDirection: 'column',
       width: '100%',

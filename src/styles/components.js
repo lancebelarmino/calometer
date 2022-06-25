@@ -56,6 +56,8 @@ const componentStyles = {
 
   NumberInput: (theme) => ({
     input: {
+      height: 40,
+      color: theme.colors.black,
       border: `1px solid ${theme.colors.gray[1]}`,
 
       '&:focus': { borderColor: theme.colors.green[1] },
@@ -149,10 +151,58 @@ const componentStyles = {
     },
   }),
 
+  Select: (theme) => ({
+    label: {
+      marginBottom: 12,
+      color: theme.colors.black,
+      fontSize: theme.fontSizes.md,
+    },
+
+    input: {
+      height: 40,
+      paddingRight: 0,
+      fontWeight: 500,
+      color: theme.colors.gray[3],
+      border: `1px solid ${theme.colors.gray[1]}`,
+
+      '&:focus, &:focus-within': {
+        borderColor: theme.colors.green[1],
+      },
+
+      '&::placeholder': {
+        color: theme.colors.gray[3],
+      },
+    },
+
+    item: {
+      color: theme.colors.black,
+    },
+
+    selected: {
+      color: theme.colors.green[1],
+      background: 'rgba(110, 212, 124, 0.08)',
+    },
+
+    hovered: {
+      background: 'rgba(110, 212, 124, 0.08)',
+    },
+
+    dropdown: {
+      borderColor: theme.colors.gray[0],
+    },
+
+    required: {
+      display: 'none',
+    },
+  }),
+
   // Buttons
   Button: (theme) => ({
     root: {
       height: 40,
+    },
+
+    filled: {
       backgroundColor: theme.colors.green[1],
       transition: theme.other.transitions.background,
 
@@ -164,6 +214,23 @@ const componentStyles = {
     label: {
       fontSize: theme.fontSizes.sm,
       fontWeight: 500,
+    },
+
+    outline: {
+      background: 'transparent',
+      borderColor: theme.colors.gray[0],
+      color: theme.colors.gray[3],
+      transition: theme.other.transitions.all,
+
+      '&:hover': {
+        background: 'rgba(110, 212, 124, 0.08)',
+        borderColor: theme.colors.green[1],
+        color: theme.colors.green[1],
+      },
+    },
+
+    subtle: {
+      transition: theme.other.transitions.color,
     },
   }),
 

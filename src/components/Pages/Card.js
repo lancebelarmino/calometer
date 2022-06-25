@@ -1,9 +1,14 @@
+import { motion } from 'framer-motion';
 import useStyles from './Card.styles';
 
-const Card = ({ children, className }) => {
+const Card = ({ children, className, ...others }) => {
   const { classes, cx } = useStyles();
 
-  return <div className={cx(classes.card, className)}>{children}</div>;
+  return (
+    <motion.div className={cx(classes.card, className)} {...others}>
+      {children}
+    </motion.div>
+  );
 };
 
 export default Card;

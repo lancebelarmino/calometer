@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ref, set, update, child, get } from 'firebase/database';
+import { ref, set, update, child, get, getDatabase, onValue } from 'firebase/database';
 import {
   signOut,
   createUserWithEmailAndPassword,
@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { auth, db } from '../firebase-config';
 import useAuth from '../hooks/useAuth';
+import getError from '../utils/getError';
 
 const AuthContext = React.createContext({
   onLogin: (email, password, from) => {},
@@ -17,13 +18,6 @@ const AuthContext = React.createContext({
   onReset: (email, cb) => {},
   onOnboarded: (email, cb) => {},
 });
-
-const getError = (error) => {
-  const unformattedError = error.split('/').pop();
-  const formattedError = unformattedError.replace(/-/g, ' ');
-
-  return formattedError;
-};
 
 export const setLocalItem = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
@@ -38,7 +32,8 @@ export const removeLocalItem = (key) => {
   localStorage.removeItem('isOnboarded');
 };
 
-export const AuthContextProvider = (props) => {
+export const AuthContextProvider = ({ children }) => {
+  const [userData, setUserData] = useState(null);
   const [from, setFrom] = useState(null);
   const currentUser = useAuth();
   const dbRef = ref(db);
@@ -117,6 +112,16 @@ export const AuthContextProvider = (props) => {
     }
   };
 
+  useEffect(() => {
+    const db = getDatabase();
+    const userRef = ref(db, `users/${currentUser?.uid}`);
+
+    return onValue(userRef, (snapshot) => {
+      const data = snapshot.val();
+      setUserData(data);
+    });
+  }, [currentUser]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -127,8 +132,9 @@ export const AuthContextProvider = (props) => {
         onOnboarded: onboardedHandler,
         from,
         setFrom,
+        userData,
       }}>
-      {props.children}
+      {children}
     </AuthContext.Provider>
   );
 };

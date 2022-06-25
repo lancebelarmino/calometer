@@ -14,46 +14,15 @@ import { ReactComponent as Weight } from '../../assets/svg/dashboard-weight.svg'
 import { ReactComponent as Shuffle } from '../../assets/svg/dashboard-shuffle.svg';
 import useStyles from './Dashboard.styles';
 import getCalories from '../../utils/getCalories';
-
-const dummy_data = {
-  weeklyReport: [560, 980, 700, 1600, 1100, 1450],
-  aveCalories: [560, 980, 700, 1600, 1100, 1450],
-  totalCalories: [560, 980, 700, 1600],
-  recentlyAdded: [
-    { food: 'Banana Cake', amount: '3 slices', calories: '500', time: 'Dinner' },
-    { food: 'Apple Cake', amount: '2 slices', calories: '400', time: 'Lunch' },
-    { food: 'Mango Cake', amount: '1 slices', calories: '300', time: 'Breakfast' },
-  ],
-  profile: {
-    birthday: '1999-05-14',
-    weight: `200`,
-    weightUnit: 'lbs',
-    height: `7'11"`,
-    heightUnit: 'ft',
-  },
-  quotes: [
-    { author: 'April RaQuel', quote: 'A lighter diet, frequent exercise and adequate sleep/rest.' },
-    { author: 'April RaQuel', quote: 'A lighter diet, frequent exercise and adequate sleep/rest.' },
-  ],
-};
-
-const getRandomNum = (arr) => {
-  let numArr = [];
-
-  for (let i = 0; i < 2; i++) {
-    const num = Math.floor(Math.random() * arr.length);
-    numArr.push(num);
-  }
-
-  return numArr;
-};
+import dummy_data from '../../data/dummy';
+import getRandomNum from '../../utils/getRandomNum';
 
 export const Dashboard = () => {
   const [quotesData, setQuotesData] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const { classes, cx } = useStyles();
 
-  const currentDate = dayjs().format('DD/MM/YYYY');
+  const currentDate = dayjs().format('YYYY-MM-DD');
 
   const randomQuoteHandler = useCallback(() => {
     const index = getRandomNum(quotesData);
@@ -109,7 +78,7 @@ export const Dashboard = () => {
 
         <div className={classes.stats}>
           <Card className={classes.statsBar}>
-            <BarChart data="Content Here" title="Weekly Report" />
+            <BarChart data={dummy_data.weeklyReport} title="Weekly Report" />
           </Card>
 
           <Card className={classes.statsLine}>

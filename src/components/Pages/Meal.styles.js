@@ -7,6 +7,7 @@ const useStyles = createStyles((theme) => ({
     borderRadius: 4,
     fontSize: theme.fontSizes.sm,
     textAlign: 'center',
+    textTransform: 'capitalize',
   },
 
   breakfast: {

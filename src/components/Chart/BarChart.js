@@ -31,6 +31,11 @@ const barColor = () => {
 
 const options = {
   responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
   scales: {
     x: {
       grid: {
@@ -42,7 +47,6 @@ const options = {
       grid: {
         drawBorder: false,
         color: '#E8E8E8',
-        // color: '#FFC700',
       },
       ticks: {
         beginAtZero: true,
@@ -51,28 +55,31 @@ const options = {
       },
     },
   },
+
   maintainAspectRatio: false,
 };
 
-const dummy_data = {
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-  datasets: [
-    {
-      data: [560, 980, 700, 1600, 1100, 1450, 1450],
-      backgroundColor: barColor(),
-      borderDash: [10, 10],
-    },
-  ],
-};
 const BarChart = ({ data, title }) => {
   const { classes } = useStyles();
+
+  const chartData = {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [
+      {
+        data: data,
+        backgroundColor: barColor(),
+        borderDash: [10, 10],
+      },
+    ],
+  };
+
   return (
     <div>
       <Title className={classes.title} order={5}>
         {title}
       </Title>
       <div className={classes.chart}>
-        <Bar options={options} data={dummy_data} />
+        <Bar options={options} data={chartData} />
       </div>
     </div>
   );

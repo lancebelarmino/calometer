@@ -30,7 +30,7 @@ const SegmentedControl = ({ data, sx, onClick, defaultPosition }) => {
   }, [defaultPosition, width]);
 
   const rowSx = () => ({
-    zIndex: 999,
+    zIndex: 199,
     display: 'grid',
     placeItems: 'center',
     position: 'relative',
