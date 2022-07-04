@@ -40,6 +40,7 @@ export const Tracker = () => {
   const hasDefaultSettings = localStorage.getItem('board_settings') !== null;
 
   const scrollRef = useRef();
+  const scrollElementRef = useRef();
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isSettingsUpdated, setIsSettingsUpdated] = useState(false);
@@ -57,9 +58,6 @@ export const Tracker = () => {
   const { classes, cx } = useStyles();
 
   const newBoardHandler = async () => {
-    const lastBoardItem = [...boardsData].pop();
-    const lastBoardItemDate = dayjs(lastBoardItem.date).format('YYYY-MM-DD');
-
     const newBoard = {
       id: uuid4(),
       date: dayjs().format(),
@@ -67,10 +65,15 @@ export const Tracker = () => {
     };
     const newBoardItemDate = dayjs(newBoard.date).format('YYYY-MM-DD');
 
-    if (lastBoardItemDate === newBoardItemDate) {
-      await scrollToRight('promise');
-      showExistingBoard();
-      return;
+    if (boardsData.length !== 0) {
+      const lastBoardItem = [...boardsData].pop();
+      const lastBoardItemDate = dayjs(lastBoardItem.date).format('YYYY-MM-DD');
+
+      if (lastBoardItemDate === newBoardItemDate) {
+        await scrollToRight('promise');
+        showExistingBoard();
+        return;
+      }
     }
 
     createBoard(newBoard);
@@ -147,12 +150,12 @@ export const Tracker = () => {
   ));
 
   useEffect(() => {
-    if (scrollRef.current !== undefined) {
-      if (scrollRef.current.children[3]) {
-        scrollRef.current.children[3].style.display = 'none';
+    if (scrollElementRef.current !== undefined) {
+      if (scrollElementRef.current.children[3]) {
+        scrollElementRef.current.children[3].style.display = 'none';
       }
     }
-  }, []);
+  }, [scrollElementRef.current]);
 
   useEffect(() => {
     if (isFirstLoad && boardsData !== null) {
@@ -260,6 +263,7 @@ export const Tracker = () => {
         {boardsData && (
           <motion.div className={classes.board} layout="position">
             <ScrollArea
+              ref={scrollElementRef}
               viewportRef={scrollRef}
               className={classes.boardArea}
               type="auto"

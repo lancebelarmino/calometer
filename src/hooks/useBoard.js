@@ -75,6 +75,12 @@ const useBoard = () => {
     if (userData !== null && boardsData === null) {
       const statsData = getStatsData(userData.boards);
 
+      if (userData.boards === undefined) {
+        setBoardsData([]);
+        setStatsData({ ...statsData });
+        return;
+      }
+
       setBoardsData(userData.boards);
       setStatsData({ ...statsData });
     }

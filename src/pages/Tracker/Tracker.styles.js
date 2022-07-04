@@ -110,8 +110,10 @@ const useStyles = createStyles((theme) => ({
   },
 
   boardArea: {
-    paddingBottom: 40,
     width: '100%',
+    height: 'auto',
+    // minHeight: 720,
+    paddingBottom: 40,
   },
 
   boardBtn: {

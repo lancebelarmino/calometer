@@ -4,8 +4,11 @@ import { useForm } from '@mantine/form';
 import AuthContext from '../../context/AuthContext';
 import FormSection from '../../components/Form/FormSection';
 import FormLink from '../../components/Form/FormLink';
-import useStyles from './Register.styles';
 import toCapitalize from '../../utils/toCapitalize';
+import getRandomColor from '../../utils/getRandomColor';
+import getInitials from '../../utils/getInitials';
+import { setLocalItem } from '../../utils/localStorage';
+import useStyles from './Register.styles';
 
 export const Register = () => {
   const { onRegister } = useContext(AuthContext);
@@ -36,9 +39,16 @@ export const Register = () => {
       firstName: firstName,
       lastName: lastName,
       isOnboarded: false,
+      profilePicture: {
+        url: false,
+        defaultColor: getRandomColor(),
+        initials: getInitials(firstName, lastName),
+      },
     };
 
     onRegister(value.email, value.password, defaultData, form.setFieldError);
+
+    setLocalItem('profile_picture', defaultData.profilePicture);
   };
 
   const changeHandler = (e) => {

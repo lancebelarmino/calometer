@@ -1,7 +1,6 @@
 import { createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
-  // Test
   backdrop: {
     position: 'fixed',
     width: '100%',

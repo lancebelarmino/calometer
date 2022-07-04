@@ -2,7 +2,8 @@ import { useEffect, useContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import useAuth from '../../hooks/useAuth';
-import AuthContext, { getLocalItem } from '../../context/AuthContext';
+import AuthContext from '../../context/AuthContext';
+import { getLocalItem } from '../../utils/localStorage';
 
 const PrivateWrapper = () => {
   const location = useLocation();

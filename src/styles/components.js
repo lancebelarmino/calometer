@@ -133,6 +133,8 @@ const componentStyles = {
     },
 
     input: {
+      height: 40,
+      color: theme.colors.black,
       border: `1px solid ${theme.colors.gray[1]}`,
 
       '&:focus-within': {

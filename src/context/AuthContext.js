@@ -6,10 +6,16 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  updatePassword,
+  deleteUser,
 } from 'firebase/auth';
-import { auth, db } from '../firebase-config';
+import { ref as storageRef, uploadBytes, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
+import { auth, db, storage } from '../firebase-config';
 import useAuth from '../hooks/useAuth';
 import getError from '../utils/getError';
+import { setLocalItem, getLocalItem, removeLocalItem } from '../utils/localStorage';
 
 const AuthContext = React.createContext({
   onLogin: (email, password, from) => {},
@@ -17,20 +23,12 @@ const AuthContext = React.createContext({
   onRegister: (email, password, defaultData) => {},
   onReset: (email, cb) => {},
   onOnboarded: (email, cb) => {},
+  onUpdateSettings: (updates) => {},
+  onImageUpload: (image) => {},
+  onChangePassword: (password, cb) => {},
+  onDeleteAccount: () => {},
+  getImageURL: () => {},
 });
-
-export const setLocalItem = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-export const getLocalItem = (key) => {
-  const localData = localStorage.getItem(key);
-  return JSON.parse(localData);
-};
-
-export const removeLocalItem = (key) => {
-  localStorage.removeItem('isOnboarded');
-};
 
 export const AuthContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
@@ -112,6 +110,79 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const updateProfileHandler = async (updates) => {
+    try {
+      await update(ref(db, 'users/' + currentUser.uid), updates);
+    } catch (error) {
+      const errorMessage = getError(error.code);
+      console.log(errorMessage);
+    }
+  };
+
+  const imageUploadHandler = async (image) => {
+    const imageListRef = storageRef(storage, `users/${currentUser.uid}`);
+    const imageRef = storageRef(storage, `users/${currentUser.uid}/avatar`);
+
+    try {
+      const data = await listAll(imageListRef);
+
+      if (data.items.length === 1) {
+        await deleteObject(imageRef);
+      }
+
+      await uploadBytes(imageRef, image);
+
+      const url = await getDownloadURL(imageRef);
+
+      await update(ref(db, 'users/' + currentUser.uid + '/profilePicture'), { url });
+
+      setUserData((prevData) => ({ ...prevData, profilePicture: { ...prevData.profilePicture, url } }));
+
+      let localStorageProfilePicture = getLocalItem('profile_picture');
+      localStorageProfilePicture.url = url;
+      setLocalItem('profile_picture', localStorageProfilePicture);
+    } catch (error) {
+      const errorMessage = getError(error.code);
+      console.log(errorMessage);
+    }
+  };
+
+  const passwordChangeHandler = async (password, successCallback, errorCallback) => {
+    const credentials = EmailAuthProvider.credential(currentUser.email, password.currentPassword);
+
+    try {
+      await reauthenticateWithCredential(currentUser, credentials);
+      await updatePassword(currentUser, password.newPassword);
+      successCallback();
+    } catch (error) {
+      const errorMessage = getError(error.code);
+      errorCallback('currentPassword', errorMessage);
+      console.log(errorMessage);
+    }
+  };
+
+  const deleteAccountHandler = async () => {
+    const imageListRef = storageRef(storage, `users/${currentUser.uid}`);
+    const imageRef = storageRef(storage, `users/${currentUser.uid}/avatar`);
+
+    try {
+      // Delete database
+      await set(ref(db, 'users/' + currentUser.uid), null);
+
+      // Delete storage
+      const data = await listAll(imageListRef);
+
+      if (data.items.length === 1) {
+        await deleteObject(imageRef);
+      }
+
+      // Delete user
+      await deleteUser(currentUser);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const db = getDatabase();
     const userRef = ref(db, `users/${currentUser?.uid}`);
@@ -130,6 +201,10 @@ export const AuthContextProvider = ({ children }) => {
         onRegister: registerHandler,
         onReset: resetHandler,
         onOnboarded: onboardedHandler,
+        onUpdateSettings: updateProfileHandler,
+        onImageUpload: imageUploadHandler,
+        onChangePassword: passwordChangeHandler,
+        onDeleteAccount: deleteAccountHandler,
         from,
         setFrom,
         userData,

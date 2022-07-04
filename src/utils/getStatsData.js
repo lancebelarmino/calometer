@@ -4,6 +4,15 @@ import isBetween from 'dayjs/plugin/isBetween';
 import getCalories from '../utils/getCalories';
 
 export default function getStatsData(data) {
+  // If new user
+  if (data === undefined) {
+    const averageCaloriesPerDay = [0];
+    const totalCaloriesToday = getCalories.format([0]);
+    const highestCalorie = getCalories.format([0]);
+
+    return { averageCaloriesPerDay, totalCaloriesToday, highestCalorie };
+  }
+
   dayjs.extend(weekday);
   dayjs.extend(isBetween);
 

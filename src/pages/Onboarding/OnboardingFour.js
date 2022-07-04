@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Title } from '@mantine/core';
 import { GooSpinner } from 'react-spinners-kit';
-import { setLocalItem } from '../../context/AuthContext';
+import { setLocalItem } from '../../utils/localStorage';
 import { motion } from 'framer-motion';
 import OnboardingSection from '../../components/Onboarding/OnboardingSection';
 import useStyles from './OnboardingFour.styles';
