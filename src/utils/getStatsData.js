@@ -6,7 +6,7 @@ import getCalories from '../utils/getCalories';
 export default function getStatsData(data) {
   // If new user
   if (data === undefined) {
-    const averageCaloriesPerDay = [0];
+    const averageCaloriesPerDay = getCalories.format([0]);
     const totalCaloriesToday = getCalories.format([0]);
     const highestCalorie = getCalories.format([0]);
 
@@ -17,32 +17,45 @@ export default function getStatsData(data) {
   dayjs.extend(isBetween);
 
   const currentDay = dayjs().format();
-  const lastSunday = dayjs().weekday(-7).format();
+  const lastSunday = dayjs().weekday(0).format();
 
   const boardsThisWeek = data.filter((board) => dayjs(board.date).isBetween(currentDay, lastSunday));
-  // Format as YYYY-MM-DD to compare the day and ignore time
-  const boardToday = data.filter(
-    (board) => dayjs(board.date).format('YYYY-MM-DD') === dayjs(currentDay).format('YYYY-MM-DD')
-  );
-  const caloriesPerBoard = boardsThisWeek.map((board) => {
-    let calories = [];
-    if (board.board_items !== undefined) {
-      board.board_items.forEach((item) => calories.push(item.calories));
+
+  const getWeeklyCalories = () => {
+    let calories = [[], [], [], [], [], [], []];
+
+    for (let i = 0; i <= boardsThisWeek.length - 1; i++) {
+      let dailyCalories = [];
+      const day = dayjs(boardsThisWeek[i].date).day();
+
+      boardsThisWeek[i].board_items.forEach((item) => dailyCalories.push(item.calories));
+
+      calories[day].push(dailyCalories);
     }
+
     return calories;
-  });
+  };
+
+  const caloriesPerBoard = getWeeklyCalories();
 
   // Average Calories Per Day This Week
-  const averageCaloriesPerDay = caloriesPerBoard.map((item) => getCalories.total(item));
-
-  // Total Calories Today
-  const hasBoardToday = boardToday.length !== 0 && boardToday[0].board_items !== undefined;
-  const caloriesToday = hasBoardToday ? boardToday[0].board_items.map((item) => item.calories) : [0];
-  const totalCaloriesToday = getCalories.format(caloriesToday);
+  const averageCaloriesPerDay = caloriesPerBoard.map((item) => {
+    // console.log(item);
+    return getCalories.total(item);
+  });
 
   // Highest Calories
   const caloriesThisWeek = caloriesPerBoard.flat();
   const highestCalorie = getCalories.format(caloriesThisWeek);
+
+  // Format as YYYY-MM-DD to compare the day and ignore time
+  const boardToday = data.filter(
+    (board) => dayjs(board.date).format('YYYY-MM-DD') === dayjs(currentDay).format('YYYY-MM-DD')
+  );
+  // Total Calories Today
+  const hasBoardToday = boardToday.length !== 0 && boardToday[0].board_items !== undefined;
+  const caloriesToday = hasBoardToday ? boardToday[0].board_items.map((item) => item.calories) : [0];
+  const totalCaloriesToday = getCalories.format(caloriesToday);
 
   return {
     averageCaloriesPerDay,

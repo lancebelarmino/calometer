@@ -9,7 +9,12 @@ import getStatsData from '../utils/getStatsData';
 const useBoard = () => {
   const { userData } = useContext(AuthContext);
   const [boardsData, setBoardsData] = useState(null);
-  const [statsData, setStatsData] = useState(null);
+  const [statsData, setStatsData] = useState({
+    formattedBoardsThisWeek: [0, 0, 0, 0, 0, 0, 0],
+    averageCaloriesPerDay: [0, 0, 0, 0, 0, 0, 0],
+    totalCaloriesToday: [0, 0, 0, 0, 0, 0, 0],
+    highestCalorie: [0, 0, 0, 0, 0, 0, 0],
+  });
   const currentUser = useAuth();
 
   const updateBoard = async (boardId, newData) => {
@@ -72,16 +77,15 @@ const useBoard = () => {
   };
 
   useEffect(() => {
-    if (userData !== null && boardsData === null) {
+    if (userData !== null) {
       const statsData = getStatsData(userData.boards);
 
       if (userData.boards === undefined) {
         setBoardsData([]);
-        setStatsData({ ...statsData });
-        return;
+      } else {
+        setBoardsData(userData.boards);
       }
 
-      setBoardsData(userData.boards);
       setStatsData({ ...statsData });
     }
   }, [userData]);

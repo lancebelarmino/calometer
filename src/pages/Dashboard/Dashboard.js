@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Text, Title, Button, Image, Group, UnstyledButton } from '@mantine/core';
+import { Text, Title, Button, Avatar, Group, UnstyledButton } from '@mantine/core';
 import dayjs from 'dayjs';
+import AuthContext from '../../context/AuthContext';
+import useBoard from '../../hooks/useBoard';
 import Section from '../../components/Pages/Section';
 import Card from '../../components/Pages/Card';
 import BarChart from '../../components/Chart/BarChart';
@@ -12,25 +14,48 @@ import { ReactComponent as Age } from '../../assets/svg/dashboard-age.svg';
 import { ReactComponent as Height } from '../../assets/svg/dashboard-height.svg';
 import { ReactComponent as Weight } from '../../assets/svg/dashboard-weight.svg';
 import { ReactComponent as Shuffle } from '../../assets/svg/dashboard-shuffle.svg';
-import useStyles from './Dashboard.styles';
 import getCalories from '../../utils/getCalories';
-import dummy_data from '../../data/dummy';
 import getRandomNum from '../../utils/getRandomNum';
+import getRecentItems from '../../utils/getRecentItems';
+import { getLocalItem } from '../../utils/localStorage';
+import useStyles from './Dashboard.styles';
 
 export const Dashboard = () => {
+  const { userData } = useContext(AuthContext);
+  const { statsData } = useBoard();
+
   const [quotesData, setQuotesData] = useState([]);
-  const [quotes, setQuotes] = useState([]);
+  const [quote, setQuote] = useState(null);
+  const [recentlyAdded, setRecentlyAdded] = useState([]);
+  const [profilePicture, setProfilePicture] = useState(() => {
+    const profilePicture = getLocalItem('profile_picture');
+
+    if (profilePicture) {
+      return {
+        image: null,
+        url: profilePicture.url,
+        defaultColor: profilePicture.defaultColor,
+        initials: profilePicture.initials,
+      };
+    }
+
+    return { image: null, url: null, defaultColor: null, initials: null };
+  });
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   const { classes, cx } = useStyles();
+
+  const isUserDataLoaded = userData !== null;
 
   const currentDate = dayjs().format('YYYY-MM-DD');
 
   const randomQuoteHandler = useCallback(() => {
     const index = getRandomNum(quotesData);
-    setQuotes([quotesData[index[0]], quotesData[index[1]]]);
+    setQuote(quotesData[index[0]]);
   }, [quotesData]);
 
-  const mealsData = dummy_data.recentlyAdded.map((data) => (
-    <tr key={data.food}>
+  const mealsData = recentlyAdded.map((data) => (
+    <tr key={data.id}>
       <td>{data.food}</td>
       <td>{data.amount}</td>
       <td>{data.calories}</td>
@@ -40,32 +65,37 @@ export const Dashboard = () => {
     </tr>
   ));
 
-  const quoteData = quotes.map((data, index) => (
-    <div key={index} className={classes.quoteItem}>
-      <Title className={classes.quoteContent} order={6}>
-        {data.text}
-      </Title>
-      <Text size="sm">- {data.author ? data.author : 'Anonymous'}</Text>
-    </div>
-  ));
+  useEffect(() => {
+    if (isFirstRender === true) {
+      (async function getQuotes() {
+        const response = await fetch('https://type.fit/api/quotes');
+        const data = await response.json();
+        const index = getRandomNum(data);
+        setQuotesData(data);
+        setQuote(data[index[0]]);
+      })();
+    }
+
+    setIsFirstRender(false);
+  }, [isFirstRender]);
 
   useEffect(() => {
-    (async function getQuotes() {
-      const response = await fetch('https://type.fit/api/quotes');
-      const data = await response.json();
-      const index = getRandomNum(data);
+    if (isUserDataLoaded) {
+      if (userData.boards !== undefined) {
+        const recentItems = getRecentItems(userData.boards);
+        setRecentlyAdded(recentItems);
+      }
+    }
+  }, [isUserDataLoaded, userData]);
 
-      setQuotesData(data);
-      setQuotes([data[index[0]], data[index[1]]]);
-    })();
-  }, []);
+  console.log(userData);
 
   return (
     <div className={classes.dashboard}>
       <Section className={classes.dashboardColLeft}>
         <div className={classes.header}>
           <Text className={classes.headerOverline} size="md">
-            Welcome back, Lance
+            Welcome back {userData ? `, ${userData.firstName}` : ''}
           </Text>
           <div className={classes.headerTitle}>
             <Title order={2}>Work hard in silence.</Title>
@@ -78,12 +108,12 @@ export const Dashboard = () => {
 
         <div className={classes.stats}>
           <Card className={classes.statsBar}>
-            <BarChart data={dummy_data.weeklyReport} title="Weekly Report" />
+            <BarChart data={statsData.averageCaloriesPerDay} title="Weekly Report" />
           </Card>
 
           <Card className={classes.statsLine}>
             <LineChart
-              data={dummy_data.aveCalories}
+              data={statsData.averageCaloriesPerDay}
               title="Average Calories"
               subtitle="Per Day"
               callback={getCalories.average}
@@ -94,7 +124,7 @@ export const Dashboard = () => {
 
           <Card className={classes.statsLine}>
             <LineChart
-              data={dummy_data.totalCalories}
+              data={statsData.totalCaloriesToday}
               title="Total Calories"
               subtitle="Today"
               callback={getCalories.total}
@@ -117,7 +147,15 @@ export const Dashboard = () => {
                 <th className={classes.thTime}>Time</th>
               </tr>
             </thead>
-            <tbody className={classes.tbody}>{mealsData}</tbody>
+            <tbody className={classes.tbody}>
+              {mealsData.length !== 0 ? (
+                mealsData
+              ) : (
+                <tr>
+                  <td>No items.</td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </div>
       </Section>
@@ -132,14 +170,16 @@ export const Dashboard = () => {
         </div>
 
         <div className={classes.profileHeader}>
-          <Image
+          <Avatar
             className={classes.profileAvatar}
-            width={120}
-            height={120}
-            radius="50%"
-            src="https://images.unsplash.com/photo-1651151925744-eb3a82fa0cbc"
-          />
-          <Title order={4}>John Doe</Title>
+            src={profilePicture.url}
+            alt="LB"
+            size={100}
+            radius={100}
+            color={profilePicture.defaultColor}>
+            {profilePicture.initials}
+          </Avatar>
+          <Title order={4}>{isUserDataLoaded ? `${userData.firstName} ${userData.lastName}` : ''}</Title>
         </div>
 
         <div className={classes.profileDetails}>
@@ -147,7 +187,9 @@ export const Dashboard = () => {
             <Group position="apart">
               <div>
                 <Text className={classes.profileLabel}>Age</Text>
-                <Title order={5}>{dayjs(currentDate).diff(dummy_data.profile.birthday, 'year')} yrs</Title>
+                <Title order={5}>
+                  {isUserDataLoaded ? dayjs(currentDate).diff(userData.profile.birthday, 'year') : '0'} yrs
+                </Title>
               </div>
               <div className={cx(classes.profileIcon, classes.profileLime)}>
                 <Age />
@@ -160,7 +202,7 @@ export const Dashboard = () => {
               <div>
                 <Text className={classes.profileLabel}>Height</Text>
                 <Title order={5}>
-                  {dummy_data.profile.height} {dummy_data.profile.heightUnit}
+                  {isUserDataLoaded ? `${userData.profile.height} ${userData.profile.heightUnit}` : '0 ft'}
                 </Title>
               </div>
               <div className={cx(classes.profileIcon, classes.profileOrange)}>
@@ -174,7 +216,7 @@ export const Dashboard = () => {
               <div>
                 <Text className={classes.profileLabel}>Weight</Text>
                 <Title order={5}>
-                  {dummy_data.profile.weight} {dummy_data.profile.weightUnit}
+                  {isUserDataLoaded ? `${userData.profile.weight} ${userData.profile.weightUnit}` : '0 kg'}
                 </Title>
               </div>
               <div className={cx(classes.profileIcon, classes.profileYellow)}>
@@ -186,13 +228,20 @@ export const Dashboard = () => {
 
         <div>
           <Group className={classes.quoteHeader} position="apart">
-            <Title order={5}>Quotes</Title>
+            <Title order={5}>Quote</Title>
             <UnstyledButton onClick={randomQuoteHandler}>
               <Shuffle className={classes.icon} />
             </UnstyledButton>
           </Group>
 
-          <div>{quotes && quoteData}</div>
+          {quote !== null && (
+            <div className={classes.quoteItem}>
+              <Title className={classes.quoteContent} order={6}>
+                {quote.text}
+              </Title>
+              <Text size="sm">- {quote.author ? quote.author : 'Anonymous'}</Text>
+            </div>
+          )}
         </div>
       </Section>
     </div>

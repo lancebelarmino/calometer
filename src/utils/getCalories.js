@@ -1,6 +1,6 @@
 const getCalories = {
   format(arr) {
-    if (arr.length < 5) {
+    if (arr.length < 7) {
       let newArr = [...arr];
       const numOfFill = 7 - arr.length;
 
