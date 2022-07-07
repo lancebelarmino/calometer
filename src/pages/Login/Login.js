@@ -8,7 +8,7 @@ import FormLink from '../../components/Form/FormLink';
 import useStyles from './Login.styles';
 
 export const Login = () => {
-  const { onLogin, from } = useContext(AuthContext);
+  const { onLogin } = useContext(AuthContext);
   const form = useForm({
     initialValues: {
       email: '',
@@ -22,7 +22,7 @@ export const Login = () => {
   const { classes } = useStyles();
 
   const submitHandler = (value) => {
-    onLogin(value.email, value.password, from, form.setFieldError);
+    onLogin(value.email, value.password, form.setFieldError);
   };
 
   const changeHandler = (e) => {

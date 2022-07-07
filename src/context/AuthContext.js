@@ -37,7 +37,7 @@ export const AuthContextProvider = ({ children }) => {
   const dbRef = ref(db);
   const navigate = useNavigate();
 
-  const loginHandler = async (email, password, from, errorCallback) => {
+  const loginHandler = async (email, password, errorCallback) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;

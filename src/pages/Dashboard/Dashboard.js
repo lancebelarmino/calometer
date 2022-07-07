@@ -88,8 +88,6 @@ export const Dashboard = () => {
     }
   }, [isUserDataLoaded, userData]);
 
-  console.log(userData);
-
   return (
     <div className={classes.dashboard}>
       <Section className={classes.dashboardColLeft}>

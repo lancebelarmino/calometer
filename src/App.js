@@ -28,24 +28,24 @@ const App = () => {
       <AuthContextProvider>
         <Suspense key="spinner" fallback={<Spinner />}>
           <NavbarSection>
-            <AnimatePresence exitBeforeEnter>
-              <Routes key={location.pathname} location={location}>
-                <Route path="/" element={<Navigate to={'/dashboard'} />} />
+            {/* <AnimatePresence exitBeforeEnter> */}
+            <Routes key={location.pathname} location={location}>
+              <Route path="/" element={<Navigate to={'/login'} />} />
 
-                <Route element={<PublicWrapper />}>
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/reset" element={<Reset />} />
-                </Route>
+              <Route element={<PublicWrapper />}>
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/reset" element={<Reset />} />
+              </Route>
 
-                <Route element={<PrivateWrapper />}>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/tracker" element={<Tracker />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/onboarding" element={<Onboarding />} />
-                </Route>
-              </Routes>
-            </AnimatePresence>
+              <Route element={<PrivateWrapper />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/tracker" element={<Tracker />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+              </Route>
+            </Routes>
+            {/* </AnimatePresence> */}
           </NavbarSection>
         </Suspense>
       </AuthContextProvider>

@@ -1,16 +1,44 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import Spinner from '../Spinner/Spinner';
+import { Navigate, Outlet } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { getLocalItem } from '../../utils/localStorage';
 
 const PublicWrapper = () => {
-  const location = useLocation();
   const currentUser = useAuth();
 
-  if (currentUser === undefined) {
-    return <Spinner />;
+  const isOnboarded = getLocalItem('isOnboarded');
+  const isFetchingUserData = currentUser === 'loading';
+  const isLoggedIn = !isFetchingUserData && currentUser !== undefined && currentUser !== null;
+
+  /**
+   * Show suspense fallback spinner while getting data
+   */
+  if (isFetchingUserData) {
+    // console.log('Public: loading');
+
+    return;
   }
 
-  return currentUser ? <Navigate to="/dashboard" /> : <Outlet state={{ from: location }} />;
+  /**
+   * Redirect user to dashboard if logged in
+   */
+  if (isLoggedIn && isOnboarded) {
+    // console.log('Public: Going dashboard');
+
+    return <Navigate to="/dashboard" />;
+  }
+
+  /**
+   * Redirect user to onboarding if logged in and not onboarded
+   */
+  if (isLoggedIn && !isOnboarded) {
+    // console.log('Public: Going dashboard');
+
+    return <Navigate to="/onboarding" />;
+  }
+
+  // console.log('Public: Going to a public page');
+
+  return <Outlet />;
 };
 
 export default PublicWrapper;
