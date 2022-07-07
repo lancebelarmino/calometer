@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Box } from '@mantine/core';
 import AuthContext from '../../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -42,11 +42,13 @@ export const Onboarding = () => {
   const { onOnboarded } = useContext(AuthContext);
   const { classes } = useStyles();
 
-  if (screen === 4) {
-    onOnboarded(data, () => {
-      setIsSubmitted(true);
-    });
-  }
+  useEffect(() => {
+    if (screen === 4) {
+      onOnboarded(data, () => {
+        setIsSubmitted(true);
+      });
+    }
+  }, [screen]);
 
   return (
     <motion.div className={classes.onboarding} variants={sectionVariant} initial="hidden" animate="visible" exit="exit">
