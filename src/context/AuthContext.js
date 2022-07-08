@@ -53,12 +53,8 @@ export const AuthContextProvider = ({ children }) => {
     } catch (error) {
       const errorMessage = getError(error.code);
 
-      if (errorMessage.includes('user')) {
-        errorCallback('email', errorMessage);
-      }
-
-      if (errorMessage.includes('password')) {
-        errorCallback('password', errorMessage);
+      if (errorMessage.includes('user') || errorMessage.includes('password')) {
+        errorCallback('password', 'Invalid username or password');
       }
     }
   };

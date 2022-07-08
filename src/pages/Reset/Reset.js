@@ -45,6 +45,10 @@ export const Reset = () => {
     navigate('/login');
   };
 
+  const blurHandler = (e) => {
+    form.validateField(e.target.id);
+  };
+
   const formSection = (
     <>
       <div className={classes.header}>
@@ -58,12 +62,13 @@ export const Reset = () => {
       <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
         <div className={classes.formRow}>
           <TextInput
+            id="email"
             label="Email"
             value={form.values.email}
+            error={form.errors.email}
             onChange={changeHandler}
-            onBlur={() => form.validateField('email')}
+            onBlur={blurHandler}
             required
-            {...form.getInputProps('email')}
           />
         </div>
 

@@ -55,6 +55,12 @@ export const Register = () => {
     form.setFieldValue(e.target.id, e.target.value);
   };
 
+  const blurHandler = (e) => {
+    form.validateField(e.target.id);
+  };
+
+  console.log(form.errors);
+
   return (
     <FormSection>
       <Title className={classes.title} order={4}>
@@ -67,31 +73,47 @@ export const Register = () => {
           cols={2}
           spacing={32}
           breakpoints={[{ maxWidth: 1024, cols: 1, spacing: 32 }]}>
-          <TextInput label="First Name" onChange={changeHandler} required {...form.getInputProps('firstName')} />
-          <TextInput label="Last Name" onChange={changeHandler} required {...form.getInputProps('lastName')} />
+          <TextInput
+            id="firstName"
+            label="First Name"
+            value={form.values.firstName}
+            onChange={changeHandler}
+            error={form.errors.firstName}
+            required
+          />
+          <TextInput
+            id="lastName"
+            label="Last Name"
+            value={form.values.lastName}
+            onChange={changeHandler}
+            error={form.errors.lastName}
+            required
+          />
         </SimpleGrid>
 
         <div className={classes.formRow}>
           <TextInput
+            id="email"
             label="Email"
+            value={form.values.email}
             onChange={changeHandler}
-            onBlur={() => form.validateField('email')}
+            onBlur={blurHandler}
+            error={form.errors.email}
             required
-            {...form.getInputProps('email')}
           />
         </div>
 
         <div className={classes.formRow}>
           <PasswordInput
+            id="password"
             classNames={{ label: classes.labelPass, description: classes.descPass }}
             label="Password"
             description="Minimum eight characters, at least one letter and one number"
+            value={form.values.password}
             onChange={changeHandler}
-            onBlur={() => {
-              form.validateField('password');
-            }}
+            onBlur={blurHandler}
+            error={form.errors.password}
             required
-            {...form.getInputProps('password')}
           />
         </div>
 

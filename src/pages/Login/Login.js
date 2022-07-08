@@ -37,11 +37,11 @@ export const Login = () => {
 
       <form className={classes.form} onSubmit={form.onSubmit(submitHandler)}>
         <div className={classes.formRow}>
-          <TextInput id="email" label="Email" onChange={changeHandler} {...form.getInputProps('email')} />
+          <TextInput id="email" label="Email" onChange={changeHandler} error={form.errors.email} />
         </div>
 
         <div className={classes.formRow}>
-          <PasswordInput id="password" onChange={changeHandler} label="Password" {...form.getInputProps('password')} />
+          <PasswordInput id="password" onChange={changeHandler} label="Password" error={form.errors.password} />
 
           <div className={classes.forgot}>
             <Anchor className={classes.forgotLink} component={Link} to="/reset">
