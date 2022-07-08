@@ -5,55 +5,7 @@ import { Alert, Button, Group } from '@mantine/core';
 import AuthContext from '../../context/AuthContext';
 import { ReactComponent as Delete } from '../../assets/svg/settings-delete.svg';
 import useStyles from './SettingsConfirmDelete.styles';
-
-const backdropVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-    transition: {
-      ease: 'easeIn',
-      duration: 0.2,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    transition: {
-      ease: 'easeOut',
-      duration: 1,
-    },
-  },
-};
-
-const modalVariant = {
-  hidden: {
-    x: '-50%',
-    y: '-42%',
-    opacity: 0,
-  },
-
-  visible: {
-    x: '-50%',
-    y: '-40%',
-    opacity: 1,
-    transition: {
-      delay: 0.1,
-      ease: 'easeIn',
-      duration: 0.2,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    transition: {
-      ease: 'easeOut',
-      duration: 0.1,
-    },
-  },
-};
+import { backdropVariant, modalVariant } from '../../utils/framer-variants';
 
 const SettingsConfirmDelete = ({ isDeleting, setIsDeleting }) => {
   const { onDeleteAccount } = useContext(AuthContext);

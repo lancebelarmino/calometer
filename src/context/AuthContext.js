@@ -162,17 +162,23 @@ export const AuthContextProvider = ({ children }) => {
     const imageRef = storageRef(storage, `users/${currentUser.uid}/avatar`);
 
     try {
-      // Delete database
+      /**
+       * Delete database
+       */
       await set(ref(db, 'users/' + currentUser.uid), null);
 
-      // Delete storage
+      /**
+       * Delete storage
+       */
       const data = await listAll(imageListRef);
 
       if (data.items.length === 1) {
         await deleteObject(imageRef);
       }
 
-      // Delete user
+      /**
+       * Delete user
+       */
       await deleteUser(currentUser);
     } catch (error) {
       console.log(error);

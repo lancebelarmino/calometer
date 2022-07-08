@@ -18,7 +18,6 @@ export const BoardContextProvider = ({ children, boardData, updateBoard, deleteB
   const [isEdit, setIsEdit] = useState(false);
   const [sortBy, setSortBy] = useState(defaultSort);
   const [sortedData, setSortedData] = useState({
-    // Default data
     total: isEmptyBoard ? 0 : getTotalCalories(boardData.board_items),
     list: isEmptyBoard ? [] : toSort(boardData.board_items, defaultSort),
     date: getFormattedDate(boardData.date),

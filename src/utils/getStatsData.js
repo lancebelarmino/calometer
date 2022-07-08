@@ -4,7 +4,9 @@ import isBetween from 'dayjs/plugin/isBetween';
 import getCalories from '../utils/getCalories';
 
 export default function getStatsData(data) {
-  // If new user
+  /**
+   * Data for new users
+   */
   if (data === undefined) {
     const averageCaloriesPerDay = getCalories.format([0]);
     const totalCaloriesToday = getCalories.format([0]);
@@ -38,21 +40,30 @@ export default function getStatsData(data) {
 
   const caloriesPerBoard = getWeeklyCalories();
 
-  // Average Calories Per Day This Week
+  /**
+   * Average Calories Per Day This Week
+   */
   const averageCaloriesPerDay = caloriesPerBoard.map((item) => {
-    // console.log(item);
     return getCalories.total(item);
   });
 
-  // Highest Calories
+  /**
+   * Highest Calories
+   */
   const caloriesThisWeek = caloriesPerBoard.flat();
   const highestCalorie = getCalories.format(caloriesThisWeek);
 
-  // Format as YYYY-MM-DD to compare the day and ignore time
+  /**
+   * Format as YYYY-MM-DD to compare the day and ignore time
+   */
   const boardToday = data.filter(
     (board) => dayjs(board.date).format('YYYY-MM-DD') === dayjs(currentDay).format('YYYY-MM-DD')
   );
-  // Total Calories Today
+
+  /**
+   * Total Calories Today
+   */
+  //
   const hasBoardToday = boardToday.length !== 0 && boardToday[0].board_items !== undefined;
   const caloriesToday = hasBoardToday ? boardToday[0].board_items.map((item) => item.calories) : [0];
   const totalCaloriesToday = getCalories.format(caloriesToday);

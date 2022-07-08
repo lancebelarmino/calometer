@@ -6,38 +6,8 @@ import { motion } from 'framer-motion';
 import dayjs from 'dayjs';
 import SegmentedControl from '../../components/Input/SegmentedControl';
 import OnboardingSection from '../../components/Onboarding/OnboardingSection';
+import { contentVariant } from '../../utils/framer-variants';
 import useStyles from './OnboardingThree.styles';
-
-const contentVariant = {
-  hidden: {
-    opacity: 0,
-    y: 10,
-  },
-
-  visible: (i) => {
-    return {
-      y: 0,
-      opacity: 1,
-      transition: {
-        ease: 'easeInOut',
-        duration: 0.4,
-        delay: i * 0.05,
-      },
-    };
-  },
-
-  exit: (i) => {
-    return {
-      y: 10,
-      opacity: 0,
-      transition: {
-        ease: 'easeInOut',
-        duration: 0.2,
-        delay: i * 0.05,
-      },
-    };
-  },
-};
 
 const OnboardingThree = ({ setScreen, setData }) => {
   const [weightUnit, setWeightUnit] = useState('lbs');

@@ -1,5 +1,7 @@
 const componentStyles = {
-  // Typography
+  /**
+   * Typography
+   */
   Title: (theme) => ({
     root: { color: theme.colors.black, transition: theme.other.transitions.color },
   }),
@@ -17,7 +19,9 @@ const componentStyles = {
     },
   }),
 
-  // Inputs
+  /**
+   * Inputs
+   */
   TextInput: (theme) => ({
     defaultVariant: {
       height: 40,
@@ -198,7 +202,9 @@ const componentStyles = {
     },
   }),
 
-  // Buttons
+  /**
+   * Buttons
+   */
   Button: (theme) => ({
     root: {
       height: 40,
@@ -242,7 +248,9 @@ const componentStyles = {
     },
   }),
 
-  // Layouts
+  /**
+   * Layouts
+   */
   Container: (theme) => ({
     root: {
       padding: 0,

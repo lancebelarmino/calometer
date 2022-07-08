@@ -6,6 +6,7 @@ import OnboardingOne from './OnboardingOne';
 import OnboardingTwo from './OnboardingTwo';
 import OnboardingThree from './OnboardingThree';
 import OnboardingFour from './OnboardingFour';
+import { sectionVariant } from '../../utils/framer-variants';
 import useStyles from './Onboarding.styles';
 
 const defaultData = {
@@ -15,24 +16,6 @@ const defaultData = {
   weightUnit: 'lbs',
   height: null,
   heightUnit: 'm',
-};
-
-const sectionVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-    transition: {
-      ease: 'easeIn',
-      duration: 0.2,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-  },
 };
 
 export const Onboarding = () => {

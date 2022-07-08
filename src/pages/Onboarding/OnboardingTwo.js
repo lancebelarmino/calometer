@@ -5,45 +5,8 @@ import LightIcon from '../../assets/svg/lightly-active.svg';
 import ModerateIcon from '../../assets/svg/moderately-active.svg';
 import VeryIcon from '../../assets/svg/very-active.svg';
 import { ReactComponent as NextIcon } from '../../assets/svg/active-next.svg';
+import { contentVariant, buttonVariant } from '../../utils/framer-variants';
 import useStyles from './OnboardingTwo.styles';
-
-const contentVariant = {
-  hidden: {
-    opacity: 0,
-    y: 10,
-  },
-
-  visible: (i) => {
-    return {
-      y: 0,
-      opacity: 1,
-      transition: {
-        ease: 'easeInOut',
-        duration: 0.4,
-        delay: i * 0.05,
-      },
-    };
-  },
-
-  exit: (i) => {
-    return {
-      y: 10,
-      opacity: 0,
-      transition: {
-        ease: 'easeInOut',
-        duration: 0.2,
-        delay: i * 0.05,
-      },
-    };
-  },
-};
-
-const buttonVariant = {
-  hidden: {
-    x: 0,
-  },
-  hover: { x: 6 },
-};
 
 const OnboardingTwo = ({ setScreen, setData }) => {
   const { classes } = useStyles();

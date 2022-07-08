@@ -112,7 +112,6 @@ const useStyles = createStyles((theme) => ({
   boardArea: {
     width: '100%',
     height: 'auto',
-    // minHeight: 720,
     paddingBottom: 40,
   },
 

@@ -11,6 +11,7 @@ import { ReactComponent as Quotes } from '../../assets/svg/navbar-quotes.svg';
 import { ReactComponent as Settings } from '../../assets/svg/navbar-settings.svg';
 import { ReactComponent as Logout } from '../../assets/svg/navbar-logout.svg';
 import toCapitalize from '../../utils/toCapitalize';
+import { linkVariant, mobileLinkVariant } from '../../utils/framer-variants';
 import useStyles from './Navbar.styles';
 
 const desktopMenu = [
@@ -27,56 +28,6 @@ const mobileMenu = [
   { icon: Settings, label: 'Settings', link: '/settings' },
   { icon: Logout, label: 'Logout', link: null },
 ];
-
-const linkVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.2,
-      delay: 0.06,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.2,
-      delay: 0.1,
-    },
-  },
-};
-
-const mobileLinkVariant = {
-  hidden: {
-    opacity: 0,
-    y: -4,
-  },
-
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.4,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    y: -4,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.3,
-    },
-  },
-};
 
 const Navbar = () => {
   const location = useLocation();

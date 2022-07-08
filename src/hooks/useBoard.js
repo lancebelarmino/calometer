@@ -23,7 +23,9 @@ const useBoard = () => {
         if (board.board_items !== undefined) {
           const itemIndex = board.board_items.findIndex((item) => item.id === newData.id);
 
-          // Update Item
+          /**
+           * Update Item
+           */
           if (itemIndex !== -1) {
             const newBoardItems = [...board.board_items];
             newBoardItems[itemIndex] = newData;
@@ -31,7 +33,9 @@ const useBoard = () => {
           }
         }
 
-        // New Item
+        /**
+         * New Item
+         */
         return { ...board, board_items: [...(board.board_items ?? []), newData] };
       }
       return board;
@@ -71,7 +75,9 @@ const useBoard = () => {
     const updatedBoard = [...boardsData, newBoard];
     const newStatsData = getStatsData(updatedBoard);
 
-    // Not adding board in database unless added a item
+    /**
+     * Note: Does not adding board in database unless user added a item
+     */
     setBoardsData(updatedBoard);
     setStatsData(newStatsData);
   };

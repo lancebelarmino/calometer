@@ -5,25 +5,8 @@ import { motion } from 'framer-motion';
 import AuthContext from '../../context/AuthContext';
 import Card from '../Pages/Card';
 import { ReactComponent as Success } from '../../assets/svg/settings-success.svg';
+import { sectionVariant } from '../../utils/framer-variants';
 import useStyles from './SettingsPassword.styles';
-
-const sectionVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-    transition: {
-      ease: 'easeIn',
-      duration: 0.2,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-  },
-};
 
 const SettingsPassword = ({ ...props }) => {
   const { onChangePassword } = useContext(AuthContext);

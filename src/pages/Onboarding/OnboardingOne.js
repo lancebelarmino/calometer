@@ -3,38 +3,8 @@ import { Title, Image } from '@mantine/core';
 import { motion } from 'framer-motion';
 import OnboardingSection from '../../components/Onboarding/OnboardingSection';
 import logo from '../../assets/svg/onboarding-logo.svg';
+import { contentVariant } from '../../utils/framer-variants';
 import useStyles from './OnboardingOne.styles';
-
-const contentVariant = {
-  hidden: {
-    opacity: 0,
-    y: 10,
-  },
-
-  visible: (i) => {
-    return {
-      y: 0,
-      opacity: 1,
-      transition: {
-        ease: 'easeInOut',
-        duration: 0.4,
-        delay: i * 0.05,
-      },
-    };
-  },
-
-  exit: (i) => {
-    return {
-      y: 10,
-      opacity: 0,
-      transition: {
-        ease: 'easeInOut',
-        duration: 0.4,
-        delay: i * 0.05,
-      },
-    };
-  },
-};
 
 const OnboardingOne = ({ setScreen }) => {
   const { classes } = useStyles();

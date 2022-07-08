@@ -11,25 +11,8 @@ import { ReactComponent as Upload } from '../../assets/svg/settings-upload.svg';
 import { ReactComponent as Delete } from '../../assets/svg/settings-delete.svg';
 import getInitials from '../../utils/getInitials';
 import { getLocalItem, setLocalItem } from '../../utils/localStorage';
+import { sectionVariant } from '../../utils/framer-variants';
 import useStyles from './SettingsProfile.styles';
-
-const sectionVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-    transition: {
-      ease: 'easeIn',
-      duration: 0.2,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-  },
-};
 
 const SettingsProfile = ({ ...props }) => {
   const selectRef = useRef();

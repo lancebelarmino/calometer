@@ -9,46 +9,8 @@ import TrackerBoardItem from './TrackerBoardItem';
 import TrackerEditor from './TrackerEditor';
 import { ReactComponent as Sort } from '../../assets/svg/tracker-sort.svg';
 import { ReactComponent as Empty } from '../../assets/svg/tracker-empty.svg';
+import { revealVariant, editorVariant } from '../../utils/framer-variants';
 import useStyles from './TrackerBoard.styles';
-
-const revealVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-  },
-
-  exit: {
-    opacity: 0,
-  },
-};
-
-const editorVariant = {
-  hidden: {
-    y: -4,
-    opacity: 0,
-  },
-
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: 0.1,
-      ease: 'easeIn',
-      duration: 0.1,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    transition: {
-      ease: 'easeOut',
-      duration: 0.1,
-    },
-  },
-};
 
 const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSettingsUpdated }) => {
   const scrollRef = useRef();

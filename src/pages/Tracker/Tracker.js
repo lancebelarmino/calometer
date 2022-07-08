@@ -14,27 +14,10 @@ import TrackerBoard from '../../components/Tracker/TrackerBoard';
 import { ReactComponent as Statistics } from '../../assets/svg/tracker-statistics.svg';
 import { ReactComponent as Sort } from '../../assets/svg/tracker-sort.svg';
 import { ReactComponent as New } from '../../assets/svg/tracker-new.svg';
+import { sectionVariant } from '../../utils/framer-variants';
 import useStyles from './Tracker.styles';
 
 const dropdownMenu = ['time', 'recent', 'highest', 'lowest'];
-
-const sectionVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-    transition: {
-      ease: 'easeIn',
-      duration: 0.2,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-  },
-};
 
 export const Tracker = () => {
   const hasDefaultSettings = localStorage.getItem('board_settings') !== null;
