@@ -59,8 +59,6 @@ export const Register = () => {
     form.validateField(e.target.id);
   };
 
-  console.log(form.errors);
-
   return (
     <FormSection>
       <Title className={classes.title} order={4}>

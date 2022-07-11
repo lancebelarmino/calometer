@@ -21,7 +21,12 @@ const useStyles = createStyles((theme) => ({
     borderRadius: 12,
     boxShadow: '0 1px 3px rgb(0 0 0 / 5%), rgb(0 0 0 / 5%) 0px 28px 23px -7px, rgb(0 0 0 / 4%) 0px 12px 12px -7px',
     background: '#FFF',
-    zIndex: 199,
+    zIndex: 200,
+
+    [theme.fn.smallerThan('sm')]: {
+      top: '5%',
+      width: 'calc(100% - 48px)',
+    },
   },
 
   modalHeader: {
