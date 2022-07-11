@@ -19,6 +19,7 @@ const Dashboard = lazy(() => import('./routes/Dashboard.js'));
 const Tracker = lazy(() => import('./routes/Tracker.js'));
 const Quotes = lazy(() => import('./routes/Quotes.js'));
 const Settings = lazy(() => import('./routes/Settings.js'));
+const NotFound = lazy(() => import('./routes/404.js'));
 
 const App = () => {
   const location = useLocation();
@@ -46,6 +47,8 @@ const App = () => {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/onboarding" element={<Onboarding />} />
               </Route>
+
+              <Route path="*" element={<NotFound />} />
             </Routes>
             {/* </AnimatePresence> */}
           </NavbarSection>
