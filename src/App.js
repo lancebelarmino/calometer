@@ -17,6 +17,7 @@ const Reset = lazy(() => import('./routes/Reset.js'));
 const Onboarding = lazy(() => import('./routes/Onboarding.js'));
 const Dashboard = lazy(() => import('./routes/Dashboard.js'));
 const Tracker = lazy(() => import('./routes/Tracker.js'));
+const Quotes = lazy(() => import('./routes/Quotes.js'));
 const Settings = lazy(() => import('./routes/Settings.js'));
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
               <Route element={<PrivateWrapper />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/tracker" element={<Tracker />} />
+                <Route path="/quotes" element={<Quotes />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/onboarding" element={<Onboarding />} />
               </Route>
