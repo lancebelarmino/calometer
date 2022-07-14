@@ -27,7 +27,7 @@ export const Dashboard = () => {
   const [quotesData, setQuotesData] = useState([]);
   const [quote, setQuote] = useState(null);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
-  const [profilePicture, setProfilePicture] = useState(() => {
+  const [profilePicture] = useState(() => {
     const profilePicture = getLocalItem('profile_picture');
 
     if (profilePicture) {

@@ -153,6 +153,8 @@ const SettingsProfile = ({ ...props }) => {
       setLifestyle(userData.profile.lifestyle);
       setIsFirstRender(false);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData, isFirstRender]);
 
   return (

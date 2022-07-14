@@ -31,6 +31,8 @@ export const Onboarding = () => {
         setIsSubmitted(true);
       });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen]);
 
   return (
