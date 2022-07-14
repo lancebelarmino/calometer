@@ -68,10 +68,14 @@ const Navbar = () => {
       component={Link}
       to={item.link !== null && item.link}
       key={item.label}
-      onClick={(e) => {
-        setActive(item.label);
-        setOpened(false);
-      }}>
+      {...(item.label === 'Logout'
+        ? { onClick: onLogout }
+        : {
+            onClick: () => {
+              setActive(item.label);
+              setOpened(false);
+            },
+          })}>
       <item.icon className={classes.linkIcon} />
       <span key={item.label}>{item.label}</span>
     </Anchor>
