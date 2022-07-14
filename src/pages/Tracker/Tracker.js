@@ -133,12 +133,10 @@ export const Tracker = () => {
   ));
 
   useEffect(() => {
-    if (scrollElementRef.current !== undefined) {
-      if (scrollElementRef.current.children[3]) {
-        scrollElementRef.current.children[3].style.display = 'none';
-      }
+    if (scrollElementRef.current) {
+      scrollElementRef.current.children[3].style.display = 'none';
     }
-  }, [scrollElementRef.current]);
+  });
 
   useEffect(() => {
     if (isFirstLoad && boardsData !== null) {
@@ -255,10 +253,15 @@ export const Tracker = () => {
               component={motion.div}
               initial={false}
               layout>
-              <Group align="flex-start" spacing={40} noWrap>
+              <Group align="flex-start" spacing={40} noWrap component={motion.div} layout="position">
                 {boardsData && boardsList}
 
-                <Button className={classes.boardBtn} variant="outline" onClick={newBoardHandler}>
+                <Button
+                  className={classes.boardBtn}
+                  variant="outline"
+                  onClick={newBoardHandler}
+                  component={motion.button}
+                  layout="position">
                   <Group>
                     <New />
                     <span>New Board</span>
