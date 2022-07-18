@@ -47,6 +47,7 @@ export const AuthContextProvider = ({ children }) => {
       if (snapshot.exists()) {
         const isOnboarded = snapshot.val().isOnboarded;
         setLocalItem('isOnboarded', isOnboarded);
+        setLocalItem('profile_picture', userData.profilePicture);
       }
 
       navigate(path, { replace: true });
@@ -122,6 +123,9 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const data = await listAll(imageListRef);
 
+      /**
+       * Deletes old image before uploading a new image
+       */
       if (data.items.length === 1) {
         await deleteObject(imageRef);
       }

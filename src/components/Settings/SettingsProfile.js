@@ -110,7 +110,9 @@ const SettingsProfile = ({ ...props }) => {
   };
 
   const submitFormHandler = (value) => {
-    onImageUpload(profilePicture.image);
+    if (profilePicture.image !== null) {
+      onImageUpload(profilePicture.image);
+    }
 
     const newProfile = {
       lifestyle: lifestyle,
@@ -120,24 +122,44 @@ const SettingsProfile = ({ ...props }) => {
       weight: value.weight,
       weightUnit: weightUnit,
     };
+    let localStorageProfilePicture = getLocalItem('profile_picture');
+    localStorageProfilePicture.initials = getInitials(value.firstName, value.lastName);
 
     let updates = {};
     updates['/profile'] = newProfile;
     updates['/firstName'] = value.firstName;
     updates['/lastName'] = value.lastName;
+    updates['/profilePicture'] = localStorageProfilePicture;
 
     onUpdateSettings(updates);
 
-    let localStorageProfilePicture = getLocalItem('profile_picture');
-    localStorageProfilePicture.initials = getInitials(value.firstName, value.lastName);
-    setLocalItem('profile_picture', localStorageProfilePicture);
-
+    setProfilePicture((prevData) => ({ ...prevData, initials: localStorageProfilePicture.initials }));
     setIsEditing(false);
+
+    setLocalItem('profile_picture', localStorageProfilePicture);
   };
 
   const cancelEditHandler = () => {
     setIsEditing(false);
     form.reset();
+  };
+
+  const deleteImageHandler = () => {
+    if (profilePicture.url !== null) {
+      let localStorageProfilePicture = getLocalItem('profile_picture');
+      localStorageProfilePicture.url = false;
+
+      let updates = {};
+      updates['/profilePicture'] = localStorageProfilePicture;
+
+      onUpdateSettings(updates);
+
+      setProfilePicture((prevData) => ({ ...prevData, url: null }));
+
+      setLocalItem('profile_picture', localStorageProfilePicture);
+    } else {
+      console.log('Empty image');
+    }
   };
 
   useEffect(() => {
@@ -170,7 +192,12 @@ const SettingsProfile = ({ ...props }) => {
 
       <motion.form className={classes.form} onSubmit={form.onSubmit(submitFormHandler)} layout="position">
         <Group className={classes.avatar} spacing={28} component={motion.div} layout="position">
-          <Avatar src={profilePicture.url} alt="LB" size={100} radius={100} color={profilePicture.defaultColor}>
+          <Avatar
+            src={profilePicture.url}
+            alt={profilePicture.initials}
+            size={100}
+            radius={100}
+            color={profilePicture.defaultColor}>
             {profilePicture.initials}
           </Avatar>
           <Group className={classes.avatarButtons} spacing={16}>
@@ -189,7 +216,11 @@ const SettingsProfile = ({ ...props }) => {
               </label>
             </div>
 
-            <Button className={classes.deletePhotoBtn} leftIcon={<Delete />} variant="outline">
+            <Button
+              className={classes.deletePhotoBtn}
+              leftIcon={<Delete />}
+              variant="outline"
+              onClick={deleteImageHandler}>
               Delete Photo
             </Button>
 

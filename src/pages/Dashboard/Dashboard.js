@@ -171,7 +171,7 @@ export const Dashboard = () => {
           <Avatar
             className={classes.profileAvatar}
             src={profilePicture.url}
-            alt="LB"
+            alt={profilePicture.initials}
             size={100}
             radius={100}
             color={profilePicture.defaultColor}>
