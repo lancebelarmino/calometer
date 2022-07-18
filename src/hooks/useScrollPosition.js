@@ -14,9 +14,9 @@ const useScrollPosition = () => {
     const { scrollHeight, clientHeight } = viewport.current;
 
     if (type === 'add') {
-      setScrollData({ scrollHeight: scrollHeight + 97, clientHeight });
+      setScrollData({ scrollHeight: scrollHeight + 25, clientHeight });
     } else if (type === 'delete') {
-      setScrollData({ scrollHeight: scrollHeight - 97, clientHeight });
+      setScrollData({ scrollHeight: scrollHeight - 25, clientHeight });
     } else {
       setScrollData({ scrollHeight, clientHeight });
     }
