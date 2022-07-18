@@ -7,16 +7,18 @@ import Card from '../Pages/Card';
 import TrackerEditorModal from '../../components/Tracker/TrackerEditorModal';
 import TrackerBoardItem from './TrackerBoardItem';
 import TrackerEditor from './TrackerEditor';
+import { ReactComponent as Delete } from '../../assets/svg/tracker-board-delete.svg';
 import { ReactComponent as Sort } from '../../assets/svg/tracker-sort.svg';
 import { ReactComponent as Empty } from '../../assets/svg/tracker-empty.svg';
-import { revealVariant, editorVariant } from '../../utils/framer-variants';
+import { revealVariant, editorVariant, deleteButtonVariant } from '../../utils/framer-variants';
 import useStyles from './TrackerBoard.styles';
 
 const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSettingsUpdated }) => {
   const scrollRef = useRef();
   const selectRef = useRef();
   const [isAdd, setIsAdd] = useState(false);
-  const { sortBy, sortBoardItem, addBoardItem, sortedData } = useContext(BoardContext);
+  const [isHoveringDelete, setIsHoveringDelete] = useState(false);
+  const { sortBy, sortBoardItem, addBoardItem, sortedData, deleteBoard } = useContext(BoardContext);
   const { viewport, isPosition, calculateScrollData, debouncedScrollPositionChangeHandler } = useScrollPosition();
   const boardItemsControls = useAnimation();
   const { classes, cx } = useStyles();
@@ -36,6 +38,10 @@ const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSe
     addBoardItem(newItem);
     calculateScrollData('add');
     setIsAdd(false);
+  };
+
+  const deleteBoardHandler = () => {
+    deleteBoard();
   };
 
   const animateItems = useCallback(() => {
@@ -77,7 +83,27 @@ const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSe
     <>
       <TrackerEditorModal />
 
-      <Card className={classes.card} animate={boardCardControls} layout>
+      <Card
+        className={classes.card}
+        onMouseEnter={() => setIsHoveringDelete(true)}
+        onMouseLeave={() => setIsHoveringDelete(false)}
+        animate={boardCardControls}
+        layout>
+        <AnimatePresence>
+          {isHoveringDelete && (
+            <UnstyledButton
+              className={classes.deleteBtn}
+              component={motion.button}
+              variants={deleteButtonVariant}
+              onClick={deleteBoardHandler}
+              initial="hidden"
+              animate="visible"
+              exit="exit">
+              <Delete />
+            </UnstyledButton>
+          )}
+        </AnimatePresence>
+
         <Group className={classes.header} position="apart" align="flex-end" component={motion.div} layout>
           <div>
             <Text className={classes.headerDate} size="md">
@@ -85,6 +111,7 @@ const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSe
             </Text>
             <Title order={4}>{sortedData.date.dayWeek}</Title>
           </div>
+
           <Select
             ref={selectRef}
             classNames={{

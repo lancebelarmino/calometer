@@ -12,7 +12,7 @@ const BoardContext = React.createContext({
   deleteBoardItem: (itemToDelete) => {},
 });
 
-export const BoardContextProvider = ({ children, boardData, updateBoard, deleteBoard, defaultSort }) => {
+export const BoardContextProvider = ({ children, boardData, onUpdateBoard, onDeleteBoard, defaultSort }) => {
   const isEmptyBoard = boardData?.board_items === undefined;
 
   const [isEdit, setIsEdit] = useState(false);
@@ -42,7 +42,7 @@ export const BoardContextProvider = ({ children, boardData, updateBoard, deleteB
     const totalCal = getTotalCalories(sortedList);
 
     setSortedData((prevData) => ({ ...prevData, total: totalCal, list: sortedList }));
-    updateBoard(boardData.id, newItemObj);
+    onUpdateBoard(boardData.id, updatedList);
   };
 
   const updateBoardItem = async (updatedItem) => {
@@ -56,7 +56,7 @@ export const BoardContextProvider = ({ children, boardData, updateBoard, deleteB
     const totalCal = getTotalCalories(sortedList);
 
     setSortedData((prevData) => ({ ...prevData, total: totalCal, list: sortedList }));
-    updateBoard(boardData.id, updatedItem);
+    onUpdateBoard(boardData.id, updatedList);
   };
 
   const deleteBoardItem = (itemToDelete) => {
@@ -64,7 +64,11 @@ export const BoardContextProvider = ({ children, boardData, updateBoard, deleteB
     const totalCal = getTotalCalories(updatedList);
 
     setSortedData((prevData) => ({ ...prevData, total: totalCal, list: updatedList }));
-    deleteBoard(boardData.id, updatedList);
+    onUpdateBoard(boardData.id, updatedList);
+  };
+
+  const deleteBoard = () => {
+    onDeleteBoard(boardData.id);
   };
 
   return (
@@ -80,6 +84,7 @@ export const BoardContextProvider = ({ children, boardData, updateBoard, deleteB
         addBoardItem,
         updateBoardItem,
         deleteBoardItem,
+        deleteBoard,
       }}>
       {children}
     </BoardContext.Provider>

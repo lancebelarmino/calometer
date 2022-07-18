@@ -30,9 +30,10 @@ export default function getStatsData(data) {
       let dailyCalories = [];
       const day = dayjs(boardsThisWeek[i].date).day();
 
-      boardsThisWeek[i].board_items.forEach((item) => dailyCalories.push(item.calories));
-
-      calories[day].push(dailyCalories);
+      if (boardsThisWeek[i].board_items !== undefined) {
+        boardsThisWeek[i].board_items.forEach((item) => dailyCalories.push(item.calories));
+        calories[day].push(dailyCalories);
+      }
     }
 
     return calories;

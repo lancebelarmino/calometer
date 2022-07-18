@@ -17,26 +17,10 @@ const useBoard = () => {
   });
   const currentUser = useAuth();
 
-  const updateBoard = async (boardId, newData) => {
+  const updateBoard = async (boardId, updatedData) => {
     const newBoardsData = boardsData.map((board) => {
       if (board.id === boardId) {
-        if (board.board_items !== undefined) {
-          const itemIndex = board.board_items.findIndex((item) => item.id === newData.id);
-
-          /**
-           * Update Item
-           */
-          if (itemIndex !== -1) {
-            const newBoardItems = [...board.board_items];
-            newBoardItems[itemIndex] = newData;
-            return { ...board, board_items: newBoardItems };
-          }
-        }
-
-        /**
-         * New Item
-         */
-        return { ...board, board_items: [...(board.board_items ?? []), newData] };
+        return { ...board, board_items: updatedData };
       }
       return board;
     });
@@ -52,13 +36,8 @@ const useBoard = () => {
     }
   };
 
-  const deleteBoard = async (boardId, filteredBoardItems) => {
-    const newBoardsData = boardsData.map((board) => {
-      if (board.id === boardId) {
-        return { ...board, board_items: filteredBoardItems };
-      }
-      return board;
-    });
+  const deleteBoard = async (boardId) => {
+    const newBoardsData = userData.boards.filter((board) => board.id !== boardId);
     const newStatsData = getStatsData(newBoardsData);
 
     try {
@@ -71,15 +50,18 @@ const useBoard = () => {
     }
   };
 
-  const createBoard = (newBoard) => {
+  const createBoard = async (newBoard) => {
     const updatedBoard = [...boardsData, newBoard];
     const newStatsData = getStatsData(updatedBoard);
 
-    /**
-     * Note: Does not adding board in database unless user added a item
-     */
-    setBoardsData(updatedBoard);
-    setStatsData(newStatsData);
+    try {
+      await update(ref(db, 'users/' + currentUser.uid), { boards: updatedBoard });
+      setBoardsData(updatedBoard);
+      setStatsData(newStatsData);
+    } catch (error) {
+      const errorMessage = getError(error.code);
+      console.log(errorMessage);
+    }
   };
 
   useEffect(() => {

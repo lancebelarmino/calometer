@@ -111,8 +111,8 @@ export const Tracker = () => {
     <BoardContextProvider
       key={index}
       boardData={item}
-      updateBoard={updateBoard}
-      deleteBoard={deleteBoard}
+      onUpdateBoard={updateBoard}
+      onDeleteBoard={deleteBoard}
       defaultSort={sortAllBy}>
       <TrackerBoard
         sortAllBy={sortAllBy}

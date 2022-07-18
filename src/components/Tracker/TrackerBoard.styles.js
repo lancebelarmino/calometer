@@ -7,6 +7,31 @@ const useStyles = createStyles((theme) => ({
     width: 360,
   },
 
+  deleteBtn: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    display: 'grid',
+    placeItems: 'center',
+    width: 24,
+    height: 24,
+    borderRadius: 28,
+    zIndex: 198,
+    transition: theme.other.transitions.background,
+
+    '& path': {
+      transition: theme.other.transitions.color,
+    },
+
+    '&:hover': {
+      backgroundColor: theme.colors.red[5],
+    },
+
+    '&:hover path': {
+      fill: theme.colors.white,
+    },
+  },
+
   header: {
     position: 'relative',
     padding: '1.75rem 1.75rem 0 1.75rem',
