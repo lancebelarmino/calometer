@@ -42,7 +42,8 @@ const TrackerBoardItem = ({ data, className, calculateScrollData }) => {
       dragSnapToOrigin
       onDragStart={() => setIsDragging(true)}
       onDragEnd={itemDragEndHandler}
-      layout>
+      layout
+      data-testid="board-item">
       <Group className={cx(classes.item, classes[borderColor])} position="apart" align="flex-end">
         <div className={classes.details}>
           <Title className={classes.title} order={4}>

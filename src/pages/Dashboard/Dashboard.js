@@ -162,7 +162,7 @@ export const Dashboard = () => {
 
       <Section className={classes.dashboardColRight}>
         <div className={classes.profileEdit}>
-          <UnstyledButton component={Link} to="/settings">
+          <UnstyledButton component={Link} to="/settings" data-testid="dashboard-settings">
             <Edit className={classes.icon} />
           </UnstyledButton>
         </div>
@@ -227,12 +227,12 @@ export const Dashboard = () => {
         <div>
           <Group className={classes.quoteHeader} position="apart">
             <Title order={5}>Quote</Title>
-            <UnstyledButton onClick={randomQuoteHandler}>
+            <UnstyledButton onClick={randomQuoteHandler} data-testid="dashboard-shuffle">
               <Shuffle className={classes.icon} />
             </UnstyledButton>
           </Group>
 
-          {quote !== null && (
+          {quote !== undefined && quote !== null && (
             <div className={classes.quoteItem}>
               <Title className={classes.quoteContent} order={6}>
                 {quote.text}

@@ -50,7 +50,8 @@ const Navbar = () => {
       key={item.label}
       onClick={(e) => {
         setActive(item.label);
-      }}>
+      }}
+      data-testid={`nav-${item.label.toLowerCase()}`}>
       <item.icon className={classes.linkIcon} />
       <AnimatePresence exitBeforeEnter>
         {desktopOpened && (
@@ -68,6 +69,7 @@ const Navbar = () => {
       component={Link}
       to={item.link !== null && item.link}
       key={item.label}
+      data-testid={`nav-${item.label.toLowerCase()}`}
       {...(item.label === 'Logout'
         ? { onClick: onLogout }
         : {
@@ -97,6 +99,7 @@ const Navbar = () => {
               size={20}
               opened={opened}
               onClick={() => setOpened((o) => !o)}
+              data-testid="nav-mobile-burger"
             />
           </Nav.Section>
           <AnimatePresence exitBeforeEnter>
@@ -132,7 +135,7 @@ const Navbar = () => {
           </Nav.Section>
 
           <Nav.Section className={classes.footer}>
-            <Anchor className={classes.link} onClick={onLogout}>
+            <Anchor className={classes.link} onClick={onLogout} data-testid={`nav-logout`}>
               <Logout className={classes.linkIcon} />
               <AnimatePresence exitBeforeEnter>
                 {desktopOpened && (

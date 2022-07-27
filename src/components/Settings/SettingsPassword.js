@@ -50,7 +50,7 @@ const SettingsPassword = ({ ...props }) => {
     const onSuccessfulChange = () => {
       setIsSuccessfulChange(true);
 
-      setTimeout(() => setIsSuccessfulChange(false), 1500);
+      setTimeout(() => setIsSuccessfulChange(false), 10000);
     };
 
     onChangePassword(values, onSuccessfulChange, form.setFieldError);

@@ -51,7 +51,14 @@ const useBoard = () => {
   };
 
   const createBoard = async (newBoard) => {
-    const updatedBoard = [...boardsData, newBoard];
+    let updatedBoard;
+
+    if (boardsData !== null) {
+      updatedBoard = [...boardsData, newBoard];
+    } else {
+      updatedBoard = [newBoard];
+    }
+
     const newStatsData = getStatsData(updatedBoard);
 
     try {

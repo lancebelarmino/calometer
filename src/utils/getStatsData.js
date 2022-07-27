@@ -32,7 +32,7 @@ export default function getStatsData(data) {
 
       if (boardsThisWeek[i].board_items !== undefined) {
         boardsThisWeek[i].board_items.forEach((item) => dailyCalories.push(item.calories));
-        calories[day].push(dailyCalories);
+        calories[day] = dailyCalories;
       }
     }
 
@@ -44,8 +44,11 @@ export default function getStatsData(data) {
   /**
    * Average Calories Per Day This Week
    */
-  const averageCaloriesPerDay = caloriesPerBoard.map((item) => {
-    return getCalories.total(item);
+  const averageCaloriesPerDay = caloriesPerBoard.map((item, index) => {
+    if (item.length !== 0) {
+      return getCalories.total(item);
+    }
+    return 0;
   });
 
   /**

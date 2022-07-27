@@ -15,26 +15,31 @@ const getCalories = {
   },
 
   average(arr) {
-    const formattedArr = getCalories.format(arr);
-    const average = formattedArr.reduce((a, b) => a + b, 0) / arr.length;
+    const filteredArr = arr.filter((item) => item !== 0);
 
-    return Math.round(average);
+    if (filteredArr.length !== 0) {
+      const average = filteredArr.reduce((a, b) => a + b, 0) / filteredArr.length;
+
+      return Math.round(average);
+    }
+
+    return 0;
   },
 
   total(arr) {
-    const formattedArr = getCalories.format(arr);
-    const total = formattedArr.reduce((a, b) => a + b);
+    if (arr.length !== 0) {
+      const total = arr.reduce((a, b) => a + b);
 
-    return Math.round(total);
+      return Math.round(total);
+    }
+
+    return 0;
   },
 
   highest(arr) {
-    const formattedArr = getCalories.format(arr);
-    const maxValue = Math.max(...formattedArr);
-    const maxIndex = formattedArr.indexOf(maxValue);
-    const highest = formattedArr[maxIndex];
+    const maxValue = Math.max(...arr.flat());
 
-    return Math.round(highest);
+    return Math.round(maxValue);
   },
 };
 

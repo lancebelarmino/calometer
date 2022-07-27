@@ -47,7 +47,6 @@ export const AuthContextProvider = ({ children }) => {
       if (snapshot.exists()) {
         const isOnboarded = snapshot.val().isOnboarded;
         setLocalItem('isOnboarded', isOnboarded);
-        setLocalItem('profile_picture', userData.profilePicture);
       }
 
       navigate(path, { replace: true });
@@ -198,6 +197,12 @@ export const AuthContextProvider = ({ children }) => {
       setUserData(data);
     });
   }, [currentUser]);
+
+  useEffect(() => {
+    if (userData !== null) {
+      setLocalItem('profile_picture', userData.profilePicture);
+    }
+  });
 
   return (
     <AuthContext.Provider

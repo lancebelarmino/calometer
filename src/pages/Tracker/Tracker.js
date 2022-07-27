@@ -48,7 +48,7 @@ export const Tracker = () => {
     };
     const newBoardItemDate = dayjs(newBoard.date).format('YYYY-MM-DD');
 
-    if (boardsData.length !== 0) {
+    if (boardsData !== null && boardsData.length !== 0) {
       const lastBoardItem = [...boardsData].pop();
       const lastBoardItemDate = dayjs(lastBoardItem.date).format('YYYY-MM-DD');
 

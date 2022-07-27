@@ -88,7 +88,8 @@ const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSe
         onMouseEnter={() => setIsHoveringDelete(true)}
         onMouseLeave={() => setIsHoveringDelete(false)}
         animate={boardCardControls}
-        layout>
+        layout
+        data-testid="tracker-board">
         <AnimatePresence>
           {isHoveringDelete && (
             <UnstyledButton
@@ -98,7 +99,8 @@ const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSe
               onClick={deleteBoardHandler}
               initial="hidden"
               animate="visible"
-              exit="exit">
+              exit="exit"
+              data-testid="board-delete">
               <Delete />
             </UnstyledButton>
           )}
@@ -203,7 +205,7 @@ const TrackerBoard = ({ boardCardControls, sortAllBy, isSettingsUpdated, setIsSe
         </AnimatePresence>
 
         <Group className={classes.footer} position="apart" align="flex-end" component={motion.div} layout="position">
-          <UnstyledButton onClick={() => setIsAdd((prevData) => !prevData)}>
+          <UnstyledButton onClick={() => setIsAdd((prevData) => !prevData)} data-testid="board-add">
             <svg
               className={classes.footerAdd}
               width="40"
