@@ -17,7 +17,7 @@ import { ReactComponent as Shuffle } from '../../assets/svg/dashboard-shuffle.sv
 import getCalories from '../../utils/getCalories';
 import getRandomNum from '../../utils/getRandomNum';
 import getRecentItems from '../../utils/getRecentItems';
-import { getLocalItem } from '../../utils/localStorage';
+import getProfilePicture from '../../utils/getProfilePicture';
 import useStyles from './Dashboard.styles';
 
 export const Dashboard = () => {
@@ -27,23 +27,11 @@ export const Dashboard = () => {
   const [quotesData, setQuotesData] = useState([]);
   const [quote, setQuote] = useState(null);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
-  const [profilePicture] = useState(() => {
-    const profilePicture = getLocalItem('profile_picture');
-
-    if (profilePicture) {
-      return {
-        image: null,
-        url: profilePicture.url,
-        defaultColor: profilePicture.defaultColor,
-        initials: profilePicture.initials,
-      };
-    }
-
-    return { image: null, url: null, defaultColor: null, initials: null };
-  });
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   const { classes, cx } = useStyles();
+
+  const profilePicture = getProfilePicture();
 
   const isUserDataLoaded = userData !== null;
 

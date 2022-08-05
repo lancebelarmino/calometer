@@ -4,7 +4,12 @@ export const setLocalItem = (key, value) => {
 
 export const getLocalItem = (key) => {
   const localData = localStorage.getItem(key);
-  return JSON.parse(localData);
+
+  if (localData !== undefined) {
+    return JSON.parse(localData);
+  }
+
+  return null;
 };
 
 export const removeLocalItem = (key) => {
